@@ -4,7 +4,7 @@ Unity Instant Game是Unity最新的小游戏解决方案，可以轻松将高品
 ## 安装定制版引擎
 Unity Instant Game定制版引擎现已登陆Unity官方网站, 前往[https://unity.cn/instantgame](https://unity.cn/instantgame "Unity Instant Game")页面即可下载最新版本。如您未安装Unity Hub请按照网页提示或者前往[Unity Hub](https://unity.cn/releases )页面安装，然后从Intant Game页面点击从Hub下载，在弹出的Hub页面中，确认勾选JDK、SDK、NDK，然后点击Install按钮即可。
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/hub.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/hub.png)
+![](Ig_doc_pic/hub.png)
 
 ## 使用前的准备
 Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务，使用前请按照以下流程申请CCD账号，并创建CCD项目 :
@@ -41,15 +41,16 @@ CCD服务仅根据下载资源产生的流量收费，采用月度阶梯累进�
  #### 1. 切换平台和选择压缩格式
 使用定制版引擎 Unity2019.4.9f1c101 打开 Endless Runner 项目，打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4HC压缩格式。
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/buildSetting.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/buildSetting.png)
+![](Ig_doc_pic/buildSetting.png)
 
  #### 2. 导入 InstantGame 插件
-从[Unity Instant Game]()网页下载Instant Game Pacake插件，完成后将package从外部拖入 unity 界面，点击import即可。该插件用于上传资源到CCD，并确保游戏按照 InstantGame 形式正确打包。[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/package.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/package.png)
+从[Unity Instant Game]()网页下载Instant Game Pacake插件，完成后将package从外部拖入 unity 界面，点击import即可。该插件用于上传资源到CCD，并确保游戏按照 InstantGame 形式正确打包。
+![](Ig_doc_pic/package.png)
 
  #### 3. 打开Instant Game功能并应用推荐设置
  InstantGame窗口位于Windows → InstantGame，该窗口包含了InstantGame的所有功能选项，用于打包小游戏前的资源（Texture/Audio/Mesh/Scene 的streaming设置，以及上传资源到CCD的设置。
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/use_instantgame.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/use_instantgame.png)
+![](Ig_doc_pic/use_instantgame.png)
 
 * **切换到Configuration窗口，勾选Use InstantGame**，打开Instant Game功能；如果后续需要使用正常的打包流程，取消勾选该选项即可。
 
@@ -67,19 +68,19 @@ Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作�
 
 * 前往[Unity Content Delivery开发者首页](https://developer.cloud.unity.cn/ )，点击Create New Project，选择已经开通CCD服务的组织，创建一个名为 Endless_Runner 的项目；
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/create_ccd_project.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/create_ccd_project.png)
+![](Ig_doc_pic/create_ccd_project.png)
 
 * 创建完成后，网页将自动跳转到Endless_Runner项目的Overview页面，该页面显示的UPID即为Instant Game使用的Project Uuid，复制该字符串并填写到Configuration窗口的Project Uuid输入框中；
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/projectUuid.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/projectUuid.png)
+![](Ig_doc_pic/projectUuid.png)
 
 * 在Overview页面点击Content Delivery → Coskey 即可查看项目的CosKey，制该字符串并填写到Configuration窗口的CosKey输入框中，完成后单击Refresh按钮拉取Endless_Runner的Bucket/Badge 信息；
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/coskey.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/coskey.png)
+![](Ig_doc_pic/coskey.png)
 
 * 选择或者创建新的Bucket/Badge 并使用。Endless_Runner项目是一个新建的CCD项目，当前并不存在bucket和badge，因此我们新建一个名为runner的bucket，并在该bucket下新建一个名为v1的badge；
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/configuration.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/configuration.png)
+![](Ig_doc_pic/configuration.png)
 
 
 CCD会为每一个Bucket自动生成一个名为latest的badge，该badge位置会自动更新，且始终指向最新的资源版本，因此**不要在发布公开版本时使用latest**，以免后续资源更新时影响已发布版本。
@@ -87,7 +88,7 @@ CCD会为每一个Bucket自动生成一个名为latest的badge，该badge位置�
  #### 5. 自定义AB文件配置（可选）
 如果游戏中有自定义打包AB，在Instant Game -> Configuration窗口， 点击Custom AB Assets右侧的Browse 按钮选择一个文本自定义AB的配置文件。该文件为文本文件，文件内首行为资源总数，之后每行为一个资源路径，资源为用户通过AssetBundle Build Map打包AB（非tag模式）时传入的所有AB的资源路径。
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/custom_ab.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/custom_ab.png)
+![](Ig_doc_pic/custom_ab.png)
 
 Endless Runner游戏工程中没有使用Build Map方式打包AB，因此直接跳过该步骤。
 
@@ -104,7 +105,7 @@ Endless Runner游戏工程中没有使用Build Map方式打包AB，因此直接�
 
 **操作流程**：点击 convertLegacySpritePacker → Sync Texture → Ctrl + A 选择所有图片，勾选 Placeholder → 点击 Generate AssetBundles → 点击表头按生成的 AB 大小排序 取消勾选 AB 过小的图片（例如小 5KB，可使用Shift多选）→ 点击 Generate AssetBundles 清理不需要的AB →    点击 Generate Placeholders.
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/texture2.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/texture2.png)
+![](Ig_doc_pic/texture2.png)
 
  #### 7. 配置Audio/Mesh Streaming
 配置游戏内的Audio/Mesh资源是否使用streaming功能。Instant Game支持将本地较大的音频和 mesh 资源内的数据从游戏首包/AB 中抽离出来，部署CCD服务器上。当游戏首次使用到该Audio/Mesh资源时，将触发引擎后台线程下载资源数据，完成后自动加载使用。
@@ -114,7 +115,7 @@ Endless Runner游戏工程中没有使用Build Map方式打包AB，因此直接�
 如果某个Mesh勾选了Streaming导致游戏出现问题（勾选Streaming会使mesh的数据延迟，在代码中对该mesh进行了读写操作， 可能出现问题），取消勾选该 mesh 即可。
 
 Endless Runner游戏中的下图三个角色Mesh勾选Streaming后出现Bone weights不匹配的问题，因此取消勾选
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/mesh.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/mesh.png)
+![](Ig_doc_pic/mesh.png)
 
  #### 8. 场景Streaming
 将BuildSettings 中的场景，打包成 AssetBundle，并部署到CCD服务器上。开发者像往常一样通过 SceneManager 调用 LoadScene/LoadSceneAsync。底层将自动触发下载，完成后自动加载场景。
@@ -138,15 +139,15 @@ Endless Runner游戏工程中，使用了Addressable进行资源打包，因此�
 
  * 打开Addressable页面
  
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/addressable_open.png.jpg)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/addressable_open.png.jpg)
+![](Ig_doc_pic/addressable_open.png.jpg)
 
  * 清理Addressable打包资源
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/addressable_clear.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/addressable_clear.png)
+![](Ig_doc_pic/addressable_clear.png)
 
  * 重新打包Addressable资源
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/addressable_build.png.jpg)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/addressable_build.png.jpg)
+![](Ig_doc_pic/addressable_build.png.jpg)
 
  #### 10. 打包小游戏并部署到CCD云服务器
 * 在Instant Game -> Configuration窗口，点击Build Instant Game按钮即可进行小游戏打包；
@@ -155,23 +156,23 @@ Endless Runner游戏工程中，使用了Addressable进行资源打包，因此�
 
 * 完成部署后，Configuration窗口下方将显示一张二维码，使用MegaApp 扫描该二维码即可运行小游戏。
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/qrcode.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/qrcode.png)
+![](Ig_doc_pic/qrcode.png)
 
 打包和上传期间，请不要改动CCD配置，否则游戏运行时将找不到需要的资源。
 
  #### 11. 小游戏运行与测试
 * 从[Unity Instant Game]()网页下载MegaApp app并安装。该App中包含了一个BoatAttack 转成的Instant Game示例，同时也是Unity Instant Game的测试工具。
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/megaapp.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/megaapp.png)
+![](Ig_doc_pic/megaapp.png)
 
 * 启动MegaApp，打开二维码扫描功能，扫描Configuration窗口页面的二维码，即可运行小游戏。
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/running.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/running.png)
+![](Ig_doc_pic/running.png)
 
 #### 12. 提交字节小游戏平台
 * 游戏上传完成后，将游戏工程根目录下的IGOutput/ig_bytedance.json提交给字节小游戏平台方即可。
 
-[![](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/json.png)](https://unity-1258948065.cos.ap-shanghai.myqcloud.com/test/AutoStreamerTest1/rel/Doc/Ig_doc_pic/json.png)
+![](Ig_doc_pic/json.png)
 
 #### 补充说明
 * Instant Game不支持对使用Packing Tag的Sprite 的Streaming，仅支持SpriteAtlas的Streaming；但可以通过InstantGame提供的功能将使用Packing Tag的Sprite转为支持Streaming的SpriteAtlas。当项目的Play Settings/Editor/Sprite Packer/Mode 为Enable For Build (Legacy Sprite Packer)或Always Enable(Legacy Sprite Packer)时，Instant Game界面才会显示ConvertLegacySpritePacker按钮
