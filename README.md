@@ -35,6 +35,10 @@ CCD服务仅根据下载资源产生的流量收费，采用月度阶梯累进�
 | 100TB以上 | 0.1375  |
 扣费操作会在腾讯云账号上执行，每天扣除前一天的使用费用，具体账单在腾讯云费用账单查询，产品名称为Unity游戏服务。**使用期间需要保持账户余额不为负**。
 
+# 支持平台
+
+## [字节小游戏上线指南](https://bytedance.feishu.cn/docs/doccn1iD3ojIypRFORZOcRoEf1g)
+
 # 转换小游戏基本步骤
 在接下来的文档中，将以[Endless Runner](https://assetstore.unity.com/packages/essentials/tutorial-projects/endless-runner-sample-game-87901)游戏为示例，介绍如何使用Instant Game功能转换小游戏，该游戏工程可以从Unity Asset Store免费获取。
 
@@ -167,9 +171,7 @@ Endless Runner游戏工程中，使用了Addressable进行资源打包，因此�
 
 * 启动MegaApp，打开二维码扫描功能，扫描Configuration窗口页面的二维码，即可运行小游戏。
 
-<img src="Ig_doc_pic/MegaAppSample.jpg" width="270">
-
-![](Ig_doc_pic/running.png)
+<img src="Ig_doc_pic/MegaAppSample.jpg" width="270"> <img src="Ig_doc_pic/running.png" width="270">
 
 ## 12. 提交字节小游戏平台
 * 游戏上传完成后，将游戏工程根目录下的IGOutput/ig_bytedance.json提交给字节小游戏平台方即可。
@@ -202,6 +204,3 @@ Endless Runner游戏工程中，使用了Addressable进行资源打包，因此�
 * audio/mesh资源变动: 重新 sync即可
 * 其余操作与**prefab与Scene文件改动**时一致
 
-# 平台相关
-
-## [字节小游戏上线指南](https://bytedance.feishu.cn/docs/doccn1iD3ojIypRFORZOcRoEf1g)
