@@ -101,7 +101,7 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 | 功能  | 描述 |
 | ------------- | ------------- |
-| Sync Textur | 搜索 BuildSettings 中的 Scenes 引用到的所有 Texture 资源；|
+| Sync Texture | 搜索 BuildSettings 中的 Scenes 引用到的所有 Texture 资源；|
 | Force Rebuild |  勾选后点击Generate AssetBundles，将强制重新生成 texture 的 AssetBundles； |
 | Generate AssetBundles | 为所有勾选的 texture 生成 AB，每张贴图一个 AB；|
 | Generate Placeholders | 为所有勾选的 texture 生成一张低分辨率的替用贴图；对于少数不支持低分辨率贴图的情况（如使用spine插件的图集，在代码中读取size的贴图，RawImage上使用的贴图），在勾选Placeholder 之外需要勾选BlurPlaceholder, 从而生成一张同样大小但信息量更少的图片 |
