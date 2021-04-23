@@ -52,13 +52,21 @@ CCD服务仅根据下载资源产生的流量收费，采用月度阶梯累进�
 ![](Ig_doc_pic/package.png)
 
  ## 3. 打开Instant Game功能并应用推荐设置
- InstantGame窗口位于Windows → InstantGame，该窗口包含了InstantGame的所有功能选项，用于打包小游戏前的资源（Texture/Audio/Mesh/Scene 的streaming设置，以及上传资源到CCD的设置。
+ InstantGame窗口位于Windows → Auto Streaming，该窗口包含了InstantGame的所有功能选项，用于打包小游戏前的资源（Texture/Audio/Mesh/Scene 的streaming设置，以及上传资源到CCD的设置。
 
 ![](Ig_doc_pic/use_instantgame.png)
 
 * **切换到Configuration窗口，勾选Use InstantGame**，打开Instant Game功能；如果后续需要使用正常的打包流程，取消勾选该选项即可。
 
 * **点击Apply recommended PlayerSettings按钮**，一键设置推荐的设置；更多信息可以查看该按钮的鼠标悬浮提示。
+
+开启Animation和Font资源的Streaming(可选):
+
+* **勾选Use Animation Streaming**，实验性功能，如果项目中使用了Timeline，建议取消勾选。
+
+* **勾选Use Font Streaming**，实验性功能；如果项目中使用了Text Mesh Pro，建议取消勾选。
+
+![](Ig_doc_pic/experimental_features.png)
 
  ## 4. 配置CCD云服务器
 Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作为部署streaming资源的云服务器。Unity CCD 提供了便捷的云端资源的版本管理。
@@ -90,7 +98,7 @@ Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作�
 CCD会为每一个Bucket自动生成一个名为latest的badge，该badge位置会自动更新，且始终指向最新的资源版本，因此**不要在发布公开版本时使用latest**，以免后续资源更新时影响已发布版本。
 
  ## 5. AB中的资源列表（可选）
-如果游戏使用AssetBundle building map打包AB，目前我们无法自动搜索出这些AB引用了哪些资源，因此需要用户提供AB中的资源列表。在Instant Game -> Configuration窗口， 点击Custom AB Assets右侧的Browse 按钮选择一个文本格式的资源列表文件（首行为资源总数，之后每行为一个资源路径）。
+如果游戏使用AssetBundle building map打包AB，目前我们无法自动搜索出这些AB引用了哪些资源，因此需要用户提供AB中的资源列表。在Auto Streaming -> Configuration窗口， 点击Custom AB Assets右侧的Browse 按钮选择一个文本格式的资源列表文件（首行为资源总数，之后每行为一个资源路径）。
 
 ![](Ig_doc_pic/custom_ab.png)
 
@@ -117,9 +125,6 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 **使用流程**：点击 Sync Audios/Meshes → 勾选 RT Mem 较大（例如大于5K）的资源
 
 如果某个Mesh勾选了Streaming导致游戏出现问题（勾选Streaming会使mesh的数据延迟，在代码中对该mesh进行了读写操作， 可能出现问题），取消勾选该 mesh 即可。
-
-Endless Runner游戏中的下图三个角色Mesh勾选Streaming后出现Bone weights不匹配的问题，因此取消勾选
-![](Ig_doc_pic/mesh.png)
 
  ## 8. 场景Streaming
 将BuildSettings 中的场景，打包成 AssetBundle，并部署到CCD服务器上。开发者像往常一样通过 SceneManager 调用 LoadScene/LoadSceneAsync。底层将自动触发下载，完成后自动加载场景。
@@ -154,7 +159,7 @@ Endless Runner游戏工程中，使用了Addressable进行资源打包，因此�
 ![](Ig_doc_pic/addressable_build.png.jpg)
 
  ## 10. 打包小游戏并部署到CCD云服务器
-* 在Instant Game -> Configuration窗口，点击Build Instant Game按钮即可进行小游戏打包；
+* 在Auto Streaming -> Configuration窗口，点击Build Instant Game按钮即可进行小游戏打包；
 
 * 打包完成后，点击Upload Built Instant Game 开始上传并部署小游戏到CCD云服务器；上传期间如果出现网络问题上传失败，重新点击上传按钮即可，上传工作会从上一次失败的位置继续执行。
 
@@ -204,3 +209,15 @@ Endless Runner游戏工程中，使用了Addressable进行资源打包，因此�
 * audio/mesh资源变动: 重新 sync即可
 * 其余操作与**prefab与Scene文件改动**时一致
 
+#  引擎版本历史：
+## 2019.4.9f1c101  --  2021/04/09
+ * 首次发布
+ * 支持Texture资源的Streaming功能
+ * 支持Audio资源的Streaming功能
+ * 支持Mesh资源的Streaming功能
+ * 支持Scene资源的Streaming功能
+
+## 2019.4.9f1c101  --  2021/04/23
+ * 新增了Font资源的Streaming功能
+ * 新增了Animation资源的Streaming功能
+ * 新增了从MegaApp连接Unity profiler和debug的支持
