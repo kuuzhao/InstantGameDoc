@@ -45,14 +45,14 @@ CCD服务仅根据下载资源产生的流量收费，采用月度阶梯累进�
 
  ## 1. 添加InstantGame需要Package
 
-打开Package Manager，勾选 Show preview packages, 分别搜索“Auto Streaming” 和 “Instant Game”安装下图三个package:
-![](Ig_doc_pic/add_packages_autostreaming.png)
+打开Package Manager，勾选 Show preview packages, 搜索“Instant Game”,点击“install”安装package，将安装以下三个package:
 ![](Ig_doc_pic/add_packages_instantgame.png)
+![](Ig_doc_pic/add_packages_autostreaming.png)
 
 对于新建的工程，三个package已经自动加到工程中，可以跳过该步骤。
 
  ## 2. 切换平台和选择压缩格式
-使用定制版引擎 Unity2019.4.9f1c103 打开 Endless Runner 项目，打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4HC压缩格式。
+使用定制版引擎 Unity2019.4.9f1c103 打开 Endless Runner 项目，打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4HC 压缩格式。
 
 ![](Ig_doc_pic/buildSetting.png)
 
@@ -117,7 +117,9 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 | Generate Placeholders | 为所有勾选的 texture 生成一张低分辨率的替用贴图；对于少数不支持低分辨率贴图的情况（如使用spine插件的图集，在代码中读取size的贴图，RawImage上使用的贴图），在勾选Placeholder 之外需要勾选BlurPlaceholder, 从而生成一张同样大小但信息量更少的图片 |
 | ConvertLegacySpritePacker | 将旧式的Sprite packer 图集，转换成SpriteAtlas  从而获得streaming支持；**该功能会清理所有sprite上的packing Tag，使用前请对工程做好备份**。|
 
-**操作流程**：点击 convertLegacySpritePacker → Sync Texture → Ctrl + A 选择所有图片，勾选 Placeholder → 点击 Generate AssetBundles → 点击表头按生成的 AB 大小排序 取消勾选 AB 过小的图片（例如小 5KB，可使用Shift多选）→ 点击 Generate AssetBundles 清理不需要的AB →    点击 Generate Placeholders.
+**首次打包操作流程**：点击 convertLegacySpritePacker → Sync Texture → Ctrl + A 选择所有图片，勾选 Placeholder → 点击 Generate AssetBundles → 点击表头按生成的 AB 大小排序 取消勾选 AB 过小的图片（例如小 5KB，可使用Shift多选）→ 点击 Generate AssetBundles 清理不需要的AB → 点击 Generate Placeholders.
+
+**更新操作流程**： Sync Texture → 调整Placeholder的勾选 → 勾选Force Rebuild → 点击 Generate AssetBundles 清理不需要的AB →  点击 Generate Placeholders.
 
 ![](Ig_doc_pic/texture2.png)
 
@@ -137,20 +139,21 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 | Force Rebuild | 勾选后，将强制重新生成 Scene 的 AssetBundles； |
 | Generate AssetBundle | 生成场景的 AB，以及 placeholderAB。 |
 
-**使用流程**： Sync Scenes → Generate AssetBundles.
+**使用流程**： Sync Scenes → 如果已经生成过场景AB，勾选Force Rebuild → Generate AssetBundles.
 
 Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前面的操作。
 
  ## 9. 游戏AB/Addressable重打包（可选）
  * 游戏工程使用了Asset bundle ，需要在配置好Texture/Audio/Mesh Streaming后，重新build Asset bundle（删除已有AB, 再打包）；
 
-* 游戏工程使用了 addressable，同样需要在配置好Texture/Audio/Mesh Streaming后重新打包。如果想要将addressable 打包后的资源上传到CCD中，需要将addressable 的 remote loading path设置为InstantId一致，后续项目打包过程中，addressable资源将被自动拷贝到IGOutput/StreamingAssets/Addressable文件夹下（如果addressable资源生成位置不在默认位置ServerData/Platform下，可手动拷贝），并随其他游戏资源一起上传到CCD。
+* 游戏工程使用了 addressable，同样需要在配置好Texture/Audio/Mesh Streaming后重新打包。如果想要将addressable 打包后的资源上传到CCD中，需要在打包 addressable 资源前将 remote loading path设置为InstantId + "/Cus%252F"，打包完成后将addressable资源手动拷贝到。
+![](Ig_doc_pic/custom_cloud_assets.png)
 
-Endless Runner游戏工程中，使用了Addressable进行资源打包，因此需要完全重新打包，步骤如下：
+在Endless Runner游戏工程中，使用了Addressable进行资源打包，因此需要完全重新打包，步骤如下：
 
  * 打开Addressable页面
  
-![](Ig_doc_pic/addressable_open.png.jpg)
+![](Ig_doc_pic/addressable_open.png)
 
  * 清理Addressable打包资源
 
@@ -158,43 +161,67 @@ Endless Runner游戏工程中，使用了Addressable进行资源打包，因此�
 
  * 重新打包Addressable资源
 
-![](Ig_doc_pic/addressable_build.png.jpg)
+![](Ig_doc_pic/addressable_build.png)
 
  ## 10. 打包小游戏并部署到CCD云服务器
-* 在Auto Streaming -> Configuration窗口，点击Build Instant Game按钮即可进行小游戏打包；
+* 打开Auto Streaming -> Configuration窗口；
 
-* 打包完成后，点击Upload Built Instant Game 开始上传并部署小游戏到CCD云服务器；上传期间如果出现网络问题上传失败，重新点击上传按钮即可，上传工作会从上一次失败的位置继续执行。
+* 如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**；
 
-* 完成部署后，Configuration窗口下方将显示一张二维码，使用MegaApp 扫描该二维码即可运行小游戏。
+* CCD配置完成后，点击Build Instant Game按钮即可进行小游戏打包；
 
+* 打包完成后，点击Upload Built Instant Game 开始上传并部署小游戏到CCD云服务器；上传期间如果出现网络问题上传失败，重新点击上传按钮即可，上传工作会从上一次失败的位置继续执行；
+
+* 完成部署后，Configuration窗口下方将显示一张二维码，使用MegaApp扫描即可运行小游戏，该二维码仅供MegaApp测试使用；
+
+* 如果遇到打包失败的问题，请先参照**补充说明**部分, 确认JDK/SDK/NDK配置正确。
 ![](Ig_doc_pic/qr.png)
 
-打包和上传期间，请不要改动CCD配置，否则游戏运行时将找不到需要的资源。
+打包和上传中间，请不要改动CCD配置，否则游戏运行时将找不到需要的资源。
 
  ## 11. 小游戏运行与测试
+* MegaApp app中仅支持游戏自身的功能测试，**广告支付等功能需要在平台方发布测试版**后使用。已接入字节SDK的游戏，受平台SDK限制需打包**Development版本**才可以在MegaApp app运行。
+
 * 从[Unity Instant Game](https://unity.cn/instantgame)网页下载MegaApp app并安装。该App中包含了一个BoatAttack 转成的Instant Game示例，同时也是Unity Instant Game的测试工具。
 
 ![](Ig_doc_pic/megaapp.png)
 
 * 启动MegaApp，打开二维码扫描功能，扫描Configuration窗口页面的二维码，即可运行小游戏。
 
-<img src="Ig_doc_pic/MegaAppSample.jpg" width="270"> <img src="Ig_doc_pic/running.png" width="270">
+<img src="Ig_doc_pic/MegaAppSample.png" width="270"> <img src="Ig_doc_pic/running.png" width="270">
 
-## 12. 提交字节小游戏平台
-* 游戏上传完成后，将游戏工程根目录下的IGOutput/ig_bytedance.json提交给字节小游戏平台方即可。
+## 12. 提交字节小游戏平台并测试
 
+* 游戏上传完成后，打开字节发布页面，填写发布信息，选择游戏工程根目录下的IGOutput/ig_bytedance.json后点击发布按钮，生成二维码后，使用抖音或头条App扫码即可自测试。
+![](Ig_doc_pic/publis_to_bytedance.png)
 ![](Ig_doc_pic/json.png)
 
 ## 补充说明
+### 功能：
 * Instant Game不支持对使用Packing Tag的Sprite 的Streaming，仅支持SpriteAtlas的Streaming；但可以通过InstantGame提供的功能将使用Packing Tag的Sprite转为支持Streaming的SpriteAtlas。当项目的Play Settings/Editor/Sprite Packer/Mode 为Enable For Build (Legacy Sprite Packer)或Always Enable(Legacy Sprite Packer)时，Instant Game界面才会显示ConvertLegacySpritePacker按钮
 
+* Texture2D 对应的Placeholder文件默认Max Size 为32，特殊情况下，可通过Texture 的Insepector中适当调高Max Size的值（一般不高于256），从而改善首次进入游戏的体验。Placeholder 存放在Assets/AutoStreamingData/Placeholders 目录下
+
+* 如果il2cpp游戏首包超过20M，可以尝试开启stripEngineCode，可减少首包约3M左右，但strip后的引擎文件不再共享
+
+* 非字节平台可选择使用Mono打包，但必须使用 .Net 4.x Api
+
+### 建议：
 * 推荐所有Texture都使用ETC或者ETC2压缩格式，从而大幅降低游戏内存占用并小幅减小场景AB和首包的size
 
 * 推荐使用Strip后的字体文件，即仅包含会使用到的字符的字体文件（如中文常用3000/6500字+英文字符+中英文标点），从而减小场景AB和首包的size。
 
-* 首包大小, mono不宜超过10M,  il2cpp 不宜超过 20M,  场景AB不宜超过5M,   否则会导致下载/加载时间过长，影响体验
+* 首包大小, mono不宜超过10M, il2cpp 不宜超过 20M,  场景AB不宜超过5M, 否则会导致下载/加载时间过长，影响体验
 
-* Texture2D 对应的Placeholder文件默认Max Size 为32，特殊情况下，可通过Texture 的Insepector中适当调高Max Size的值（一般不高于256），从而改善首次进入游戏的体验。Placeholder 存放在Assets/AutoStreamingData/Placeholders 目录下。
+* 打包游戏前建议将Managed Stripping Level开到游戏支持的最高级别，从而减小首包大小
+
+### 问题：
+* 如果操作失误，上传文件到CCD时覆盖了已有版本的badge，请前往CCD网站将Badge标签设置回来
+![](Ig_doc_pic/reset_badge.png)
+
+* 如果Unity不是从从Unity Hub安装的，请打开Edit → Preference → External Tools，将JDK，SDK，NDK按如下路径设置，然后重启Editor
+![](Ig_doc_pic/sdk.png)
+
 
 # 游戏版本更新打包流程：
 ## 仅代码改动：
@@ -226,6 +253,8 @@ Endless Runner游戏工程中，使用了Addressable进行资源打包，因此�
 
 ## 2019.4.9f1c103  --  2021/05/26
  * 迁移InstantGame package到了Package Manager中
- * 新增了Legacy Animation Clip的streaming
+ * 新增了Legacy Animation Clip的streaming支持
  * 优化生成placeholder的速度
  * 优化CCD文件上传的速度和稳定性
+ * 新增Il2cpp strip engine code的支持(开启后将不再共享引擎)
+ * 新增Text Mesh Pro中font Texture的streaming支持
