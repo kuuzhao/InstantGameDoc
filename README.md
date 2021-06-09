@@ -146,7 +146,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
  ## 9. 游戏AB/Addressable重打包（可选）
  * 游戏工程使用了Asset bundle ，需要在配置好Texture/Audio/Mesh Streaming后，重新build Asset bundle（删除已有AB, 再打包）；
 
-* 游戏工程使用了 addressable，同样需要在配置好Texture/Audio/Mesh Streaming后重新打包。如果想要将addressable 打包后的资源上传到CCD中，需要在打包 addressable 资源前将 remote loading path设置为InstantId + "/Cus%252F"，打包完成后将addressable资源手动拷贝到。
+* 游戏工程使用了 addressable，同样需要在配置好Texture/Audio/Mesh Streaming后重新打包。如果想要将addressable 打包后的资源上传到CCD中，需要在打包 addressable 资源前将 remote loading path设置为InstantId + "/CUS%252F"，打包完成后将addressable资源手动拷贝到。
 ![](Ig_doc_pic/custom_cloud_assets.png)
 
 在Endless Runner游戏工程中，使用了Addressable进行资源打包，因此需要完全重新打包，步骤如下：
