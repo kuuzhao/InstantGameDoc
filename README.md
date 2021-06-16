@@ -82,7 +82,7 @@ Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作�
 | Bucket  | 文件桶，建议游戏的资源存放在一个bucket中，从而利用CCD资源版本管理和增量上传的优势提高开发效率； |
 | Badge   | 便于版本管理的 tag 标签，可选择绑定在任何一个 Release 上，而不改变文件访问地址 ，建议每次发布游戏新版本时，创建一个新的Badge；  |
 
-* 前往[Unity Content Delivery开发者首页](https://developer.cloud.unity.cn/ )，点击Create New Project，选择已经开通CCD服务的组织，创建一个名为 Endless_Runner 的项目；
+* 前往[Unity Content Delivery开发者首页](https://developer.cloud.unity.cn/ )，点击Create New Project，选择已经开通CCD服务的组织，创建一个名为 Endless_Runner 的项目；如已有CCD Project可跳过该步骤
 
 ![](Ig_doc_pic/create_ccd_project.png)
 
@@ -222,6 +222,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 * 如果Unity不是从从Unity Hub安装的，请打开Edit → Preference → External Tools，将JDK，SDK，NDK按如下路径设置，然后重启Editor
 ![](Ig_doc_pic/sdk.png)
 
+* 如果游戏已使用c102及以前的版本转换，迁移到新版本请删除Plugins/InstantGame 和InstantGameData目录后重新构建资源；
 
 # 游戏版本更新打包流程：
 ## 仅代码改动：
@@ -246,15 +247,15 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
  * 支持Mesh资源的Streaming功能
  * 支持Scene资源的Streaming功能
 
-## 2019.4.9f1c102  --  2021/04/23
+## 2019.4.9f1c102  --  2021/05/10
  * 新增了Font资源的Streaming功能
  * 新增了Animation资源的Streaming功能
  * 新增了从MegaApp连接Unity profiler和debug的支持
 
-## 2019.4.9f1c103  --  2021/05/26
- * 迁移InstantGame package到了Package Manager中
+## 2019.4.9f1c103  --  2021/06/16
+ * 重新构建InstantGame package成为Package Manager中com.unity.autostreaming, com.unity.autostreaming.ccd 和 com.unity.instantgame三个package;
  * 新增了Legacy Animation Clip的streaming支持
  * 优化生成placeholder的速度
  * 优化CCD文件上传的速度和稳定性
- * 新增Il2cpp strip engine code的支持(开启后将不再共享引擎)
+ * 新增Il2cpp strip engine code的支持，开启后libunity.so会减小，但不再作为引擎共享文件
  * 新增Text Mesh Pro中font Texture的streaming支持
