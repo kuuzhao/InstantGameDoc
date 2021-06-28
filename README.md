@@ -161,10 +161,10 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 
  * 点击 AssetBundles -> Build AssetBundles 重新打包AB
 
-![](Ig_doc_pic/build_AB.png)
+![](Ig_doc_pic/rebuild_AB.png)
 
  ## 11. 打包小游戏并部署到CCD云服务器
-* 打开Auto Streaming -> Configuration窗口；
+* 打开Auto Streaming -> Configuration窗口，选择使用的bucket和badge；
 
 * 如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**；
 
@@ -172,7 +172,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 
 * 打包完成后，点击Upload Built Instant Game 开始上传并部署小游戏到CCD云服务器；上传期间如果出现网络问题上传失败，重新点击上传按钮即可，上传工作会从上一次失败的位置继续执行；
 
-* 完成部署后，Configuration窗口下方将显示一张二维码，使用MegaApp扫描即可运行小游戏，该二维码仅供MegaApp测试使用；
+* 完成部署后，使用MegaApp扫描下方的二维码即可运行小游戏，该二维码仅供MegaApp测试使用；
 
 * 如果遇到打包失败的问题，请先参照**补充说明**部分, 确认JDK/SDK/NDK配置正确。
 ![](Ig_doc_pic/qr.png)
@@ -228,7 +228,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 # 游戏版本更新打包流程：
 ## 仅代码改动：
 * 在Configuration增加一个新的badge并使用
-* 重新执行 步骤 **10. 打包小游戏并部署到CCD云服务器** 之后的操作即可
+* 重新执行 步骤 **11. 打包小游戏并部署到CCD云服务器** 之后的操作即可
 
 ## prefab与Scene文件改动：
 * 在Scene Streaming页面，点击 Sync Scenes → 勾选force rebuild → Generate AssetBundles.
