@@ -41,9 +41,13 @@ CCD服务仅根据下载资源产生的流量收费，采用月度阶梯累进�
 ## [字节小游戏上线指南](https://bytedance.feishu.cn/docs/doccn1iD3ojIypRFORZOcRoEf1g)
 
 # 转换小游戏基本步骤
-在接下来的文档中，将以[Endless Runner](https://assetstore.unity.com/packages/essentials/tutorial-projects/endless-runner-sample-game-87901)游戏为示例，介绍如何使用Instant Game功能转换小游戏，该游戏工程可以从Unity Asset Store免费获取。
+在接下来的文档中，将以[Endless Runner](Ig_doc_file/EndlessRunner.unitypackage)游戏为示例，介绍如何使用Instant Game功能转换小游戏，游戏可从以下链接获取[EndlessRunner.unitypackage](Ig_doc_file/EndlessRunner.unitypackage)。
 
- ## 1. 添加InstantGame需要Package
+ ## 1. 新建Endless Runner工程
+使用定制版引擎 Unity2019.4.9f1c104新建工程Endless Runner，下载[EndlessRunner.unitypackage](Ig_doc_file/EndlessRunner.unitypackage)并导入工程。
+![](Ig_doc_pic/import_project.png)
+
+ ## 2. 添加InstantGame需要Package
 
 打开Package Manager，勾选 Show preview packages, 搜索“Instant Game”,点击“install”安装package，将安装以下三个package:
 ![](Ig_doc_pic/add_packages_instantgame.png)
@@ -51,12 +55,12 @@ CCD服务仅根据下载资源产生的流量收费，采用月度阶梯累进�
 
 对于新建的工程，三个package已经自动加到工程中，可以跳过该步骤。
 
- ## 2. 切换平台和选择压缩格式
-使用定制版引擎 Unity2019.4.9f1c103 打开 Endless Runner 项目，打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4HC 压缩格式。
+ ## 3. 切换平台和选择压缩格式
+打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4HC 压缩格式。同时确认**取消勾选export project**。
 
 ![](Ig_doc_pic/buildSetting.png)
 
- ## 3. 打开Instant Game功能并应用推荐设置
+ ## 4. 打开Instant Game功能并应用推荐设置
  InstantGame窗口位于Windows → Auto Streaming，该窗口包含了InstantGame的所有功能选项，用于打包小游戏前的资源（Texture/Audio/Mesh/Scene 的streaming设置，以及上传资源到CCD的设置。
 
 ![](Ig_doc_pic/use_autostreaming.png)
@@ -73,7 +77,7 @@ CCD服务仅根据下载资源产生的流量收费，采用月度阶梯累进�
 
 ![](Ig_doc_pic/experimental_features.png)
 
- ## 4. 配置CCD云服务器
+ ## 5. 配置CCD云服务器
 Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作为部署streaming资源的云服务器。Unity CCD 提供了便捷的云端资源的版本管理。
 
 | 字段  | 描述 |
@@ -99,14 +103,14 @@ Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作�
 
 CCD会为每一个Bucket自动生成一个名为latest的badge，该badge位置会自动更新，且始终指向最新的资源版本，因此**不要在发布公开版本时使用latest**，以免后续资源更新时影响已发布版本。
 
- ## 5. AB中的资源列表（可选）
+ ## 6. AB中的资源列表（可选）
 如果游戏使用AssetBundle building map打包AB，目前我们无法自动搜索出这些AB引用了哪些资源，因此需要用户提供AB中的资源列表。在Auto Streaming -> Configuration窗口， 点击Custom AB Assets右侧的Browse 按钮选择一个文本格式的资源列表文件（首行为资源总数，之后每行为一个资源路径）。
 
 ![](Ig_doc_pic/custom_ab.png)
 
 Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因此跳过该步骤。
 
- ## 6. 配置Texture Streaming
+ ## 7. 配置Texture Streaming
 配置游戏内texture是否使用streaming功能，以及streaming placeholder的类型。Instant Game用placeholder图片替换游戏首包内的原始贴图，游戏运行时，先加载低分辨率/低信息量的贴图，快速启动游戏。当游戏首次使用到该Texture资源时，将触发引擎后台线程从CCD云端下载原始贴图，完成后自动替换为原始贴图。
 
 | 功能  | 描述 |
@@ -123,14 +127,14 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 ![](Ig_doc_pic/texture2.png)
 
- ## 7. 配置Audio/Mesh Streaming
+ ## 8. 配置Audio/Mesh Streaming
 配置游戏内的Audio/Mesh资源是否使用streaming功能。Instant Game支持将本地较大的音频和 mesh 资源内的数据从游戏首包/AB 中抽离出来，部署CCD服务器上。当游戏首次使用到该Audio/Mesh资源时，将触发引擎后台线程下载资源数据，完成后自动加载使用。
 
 **使用流程**：点击 Sync Audios/Meshes → 勾选 RT Mem 较大（例如大于5K）的资源
 
 如果某个Mesh勾选了Streaming导致游戏出现问题（勾选Streaming会使mesh的数据延迟，在代码中对该mesh进行了读写操作， 可能出现问题），取消勾选该 mesh 即可。
 
- ## 8. 场景Streaming
+ ## 9. 场景Streaming
 将BuildSettings 中的场景，打包成 AssetBundle，并部署到CCD服务器上。开发者像往常一样通过 SceneManager 调用 LoadScene/LoadSceneAsync。底层将自动触发下载，完成后自动加载场景。
 
 | 功能  | 描述 |
@@ -143,27 +147,23 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前面的操作。
 
- ## 9. 游戏AB/Addressable重打包（可选）
+ ## 10. 游戏AB/Addressable重打包（可选）
  * 游戏工程使用了Asset bundle ，需要在配置好Texture/Audio/Mesh Streaming后，重新build Asset bundle（删除已有AB, 再打包）；
 
-* 游戏工程使用了 addressable，同样需要在配置好Texture/Audio/Mesh Streaming后重新打包。如果想要将addressable 打包后的资源上传到CCD中，需要在打包 addressable 资源前将 remote loading path设置为InstantId + "/CUS%252F"，打包完成后将addressable资源手动拷贝到。
-![](Ig_doc_pic/custom_cloud_assets.png)
+* 游戏工程使用了 addressable，同样需要在配置好Texture/Audio/Mesh Streaming后重新打包。
 
-在Endless Runner游戏工程中，使用了Addressable进行资源打包，因此需要完全重新打包，步骤如下：
 
- * 打开Addressable页面
+在Endless Runner游戏工程中，使用了Asset bundle进行资源打包，因此需要完全重新打包，步骤如下：
+
+ * 如果已经打包过AB，删除StreamingAssets目录下的AB包
  
-![](Ig_doc_pic/addressable_open.png)
+![](Ig_doc_pic/delete_AB.png)
 
- * 清理Addressable打包资源
+ * 点击 AssetBundles -> Build AssetBundles 重新打包AB
 
-![](Ig_doc_pic/addressable_clear.png)
+![](Ig_doc_pic/build_AB.png)
 
- * 重新打包Addressable资源
-
-![](Ig_doc_pic/addressable_build.png)
-
- ## 10. 打包小游戏并部署到CCD云服务器
+ ## 11. 打包小游戏并部署到CCD云服务器
 * 打开Auto Streaming -> Configuration窗口；
 
 * 如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**；
@@ -179,7 +179,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 
 打包和上传中间，请不要改动CCD配置，否则游戏运行时将找不到需要的资源。
 
- ## 11. 小游戏运行与测试
+ ## 12. 小游戏运行与测试
 * MegaApp app中仅支持游戏自身的功能测试，**广告支付等功能需要在平台方发布测试版**后使用。已接入字节SDK的游戏，受平台SDK限制需打包**Development版本**才可以在MegaApp app运行。
 
 * 从[Unity Instant Game](https://unity.cn/instantgame)网页下载MegaApp app并安装。该App中包含了一个BoatAttack 转成的Instant Game示例，同时也是Unity Instant Game的测试工具。
@@ -190,7 +190,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 
 <img src="Ig_doc_pic/MegaAppSample.png" width="270"> <img src="Ig_doc_pic/running.png" width="270">
 
-## 12. 提交字节小游戏平台并测试
+## 13. 提交字节小游戏平台并测试
 
 * 游戏上传完成后，打开字节发布页面，填写发布信息，选择游戏工程根目录下的IGOutput/ig_bytedance.json后点击发布按钮，生成二维码后，使用抖音或头条App扫码即可自测试。
 ![](Ig_doc_pic/publis_to_bytedance.png)
@@ -219,7 +219,8 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 * 如果操作失误，上传文件到CCD时覆盖了已有版本的badge，请前往CCD网站将Badge标签设置回来
 ![](Ig_doc_pic/reset_badge.png)
 
-* 如果Unity不是从从Unity Hub安装的，请打开Edit → Preference → External Tools，将JDK，SDK，NDK按如下路径设置，然后重启Editor
+* 如果定制版Unity不是从从Unity Hub安装的，请使用Hub下载官方版本的unity2019.4.9f1并勾选SDK、NDK，完成后请打开定制版Unity 的 Edit → Preference → External Tools窗口，将JDK，SDK，NDK按如下路径设置，然后重启Editor
+
 ![](Ig_doc_pic/sdk.png)
 
 * 如果游戏已使用c102及以前的版本转换，迁移到新版本请删除Plugins/InstantGame 和InstantGameData目录后重新构建资源；
@@ -259,3 +260,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
  * 优化CCD文件上传的速度和稳定性
  * 新增Il2cpp strip engine code的支持，开启后libunity.so会减小，但不再作为引擎共享文件
  * 新增Text Mesh Pro中font Texture的streaming支持
+
+## 2019.4.9f1c103  --  2021/06/27
+  * 优化游戏启动速度
+  * 新增Badge锁定功能，用于保护线上版本
