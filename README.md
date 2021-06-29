@@ -261,6 +261,6 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
  * 新增Il2cpp strip engine code的支持，开启后libunity.so会减小，但不再作为引擎共享文件
  * 新增Text Mesh Pro中font Texture的streaming支持
 
-## 2019.4.9f1c103  --  2021/06/27
+## 2019.4.9f1c104  --  2021/06/27
   * 优化游戏启动速度
   * 新增Badge锁定功能，用于保护线上版本
