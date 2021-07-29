@@ -256,10 +256,11 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 #  版本历史：
 
 ## 2019.4.9f1c105  --  2021/07/29
+  * 新增Mac OS支持
   * 新增ParticleMeshRender上的Mesh streaming支持
   * 新增场景lightmaps的streaming支持
-  * 支持快手小游戏平台
-  * 支持手Q小游戏平台
+  * 新增快手小游戏平台支持
+  * 新增手Q小游戏平台支持
 
 ## 2019.4.9f1c104  --  2021/06/27
   * 优化游戏启动速度
