@@ -41,10 +41,10 @@ CCD服务仅根据下载资源产生的流量收费，采用月度阶梯累进�
 ## [字节小游戏上线指南](https://bytedance.feishu.cn/docs/doccn1iD3ojIypRFORZOcRoEf1g)
 
 # 转换小游戏基本步骤
-在接下来的文档中，将以[Endless Runner](Ig_doc_file/EndlessRunner.unitypackage)游戏为示例，介绍如何使用Instant Game功能转换小游戏，游戏可从以下链接获取[EndlessRunner.unitypackage](Ig_doc_file/EndlessRunner.unitypackage)。
+在接下来的文档中，将以[Endless Runner](Ig_doc_file/EndlessRunner.unitypackage)游戏为示例，介绍如何使用Instant Game功能转换小游戏，游戏工程可从以下链接获取[EndlessRunner.unitypackage](Ig_doc_file/EndlessRunner.unitypackage)。
 
  ## 1. 新建Endless Runner工程
-使用定制版引擎 Unity2019.4.9f1c104新建工程Endless Runner，下载[EndlessRunner.unitypackage](Ig_doc_file/EndlessRunner.unitypackage)并导入工程。
+使用定制版引擎 Unity2019.4.9f1c105新建工程Endless Runner，下载[EndlessRunner.unitypackage](Ig_doc_file/EndlessRunner.unitypackage)并导入工程。
 ![](Ig_doc_pic/import_project.png)
 
  ## 2. 添加InstantGame需要Package
@@ -61,19 +61,19 @@ CCD服务仅根据下载资源产生的流量收费，采用月度阶梯累进�
 ![](Ig_doc_pic/buildSetting.png)
 
  ## 4. 打开Instant Game功能并应用推荐设置
- InstantGame窗口位于Windows → Auto Streaming，该窗口包含了InstantGame的所有功能选项，用于打包小游戏前的资源（Texture/Audio/Mesh/Scene 的streaming设置，以及上传资源到CCD的设置。
+ InstantGame窗口位于Windows → Auto Streaming，该窗口包含了InstantGame的所有功能选项，打包小游戏前的资源streaming设置，以及上传资源到CCD的设置。
 
 ![](Ig_doc_pic/use_autostreaming.png)
 
 * **切换到Configuration窗口，勾选Use AutoStreaming**，打开Instant Game功能；如果后续需要使用正常的打包流程，取消勾选该选项即可。
 
-* **点击Apply recommended PlayerSettings按钮**，一键设置推荐的设置；更多信息可以查看该按钮的鼠标悬浮提示。
+* **点击Apply recommended PlayerSettings按钮**，一键设置推荐的ProjectSettings；更多信息可以查看该按钮的鼠标悬浮提示。
 
 开启Animation和Font资源的Streaming(可选):
 
 * **勾选Use Animation Streaming**，实验性功能，如果项目中使用了Timeline，建议取消勾选。
 
-* **勾选Use Font Streaming**，实验性功能；如果项目中使用了Text Mesh Pro，建议取消勾选。
+* **勾选Use Font Streaming**，实验性功能。
 
 ![](Ig_doc_pic/experimental_features.png)
 
@@ -190,11 +190,20 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 
 <img src="Ig_doc_pic/MegaAppSample.png" width="270"> <img src="Ig_doc_pic/running.png" width="270">
 
-## 13. 提交字节小游戏平台并测试
+## 13. 提交小游戏平台并测试
+
+### 字节小游戏
 
 * 游戏上传完成后，打开字节发布页面，填写发布信息，选择游戏工程根目录下的IGOutput/ig_bytedance.json后点击发布按钮，生成二维码后，使用抖音或头条App扫码即可自测试。
 ![](Ig_doc_pic/publis_to_bytedance.png)
-![](Ig_doc_pic/json.png)
+![](Ig_doc_pic/bytedance_json.png)
+
+### 快手小游戏
+ * 游戏上传完成后，通过[快手小游戏发布流程](https://docs.qingque.cn/d/home/eZQCxPZeFJeasEKOxlcGm0W8D), 将游戏工程根目录下的IGOutput/ig_kwai.json提交审核，完成后使用最新版快手 App 扫描生成的二维码即可自测试。
+![](Ig_doc_pic/publish_to_kwai.png)
+![](Ig_doc_pic/kwai_json.png)
+### 手Q小游戏
+ * TBA
 
 ## 补充说明
 ### 功能：
@@ -219,11 +228,15 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 * 如果操作失误，上传文件到CCD时覆盖了已有版本的badge，请前往CCD网站将Badge标签设置回来
 ![](Ig_doc_pic/reset_badge.png)
 
-* 如果定制版Unity不是从从Unity Hub安装的，请使用Hub下载官方版本的unity2019.4.9f1并勾选SDK、NDK，完成后请打开定制版Unity 的 Edit → Preference → External Tools窗口，将JDK，SDK，NDK按如下路径设置，然后重启Editor
+* 如果定制版Unity不是从从Unity Hub安装的，请使用Hub下载官方版本的unity2019.4.9f1c1并勾选SDK、NDK，完成后请打开定制版Unity 的 Edit → Preference → External Tools窗口，将JDK，SDK，NDK按如下路径设置，然后重启Editor
 
 ![](Ig_doc_pic/sdk.png)
 
-* 如果游戏已使用c102及以前的版本转换，迁移到新版本请删除Plugins/InstantGame 和InstantGameData目录后重新构建资源；
+* 如果打包过程出现异常，请打开PackageManger，重新安装步骤2中的三个package以确保package版本正确；
+
+* 如果遇到游戏启动时crash，并输出类似 "Cannot create web request without initializing the system"的错误提示，请取消勾选stripEngineCode
+
+* 如果游戏已使用c102及以前的版本转换，迁移到新版本请删除Assets/Plugins/InstantGame 和Assets/InstantGameData目录后重新构建资源；
 
 # 游戏版本更新打包流程：
 ## 仅代码改动：
@@ -241,17 +254,17 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 * 其余操作与**prefab与Scene文件改动**时一致
 
 #  版本历史：
-## 2019.4.9f1c101  --  2021/04/09
- * 首次发布
- * 支持Texture资源的Streaming功能
- * 支持Audio资源的Streaming功能
- * 支持Mesh资源的Streaming功能
- * 支持Scene资源的Streaming功能
 
-## 2019.4.9f1c102  --  2021/05/10
- * 新增了Font资源的Streaming功能
- * 新增了Animation资源的Streaming功能
- * 新增了从MegaApp连接Unity profiler和debug的支持
+## 2019.4.9f1c105  --  2021/07/29
+  * 新增ParticleMeshRender上的Mesh streaming支持
+  * 新增场景lightmaps的streaming支持
+  * 支持快手小游戏平台
+  * 支持手Q小游戏平台
+
+## 2019.4.9f1c104  --  2021/06/27
+  * 优化游戏启动速度
+  * 新增Badge锁定功能，用于保护线上版本
+  * 新增readable Texture/Mesh Editor提示
 
 ## 2019.4.9f1c103  --  2021/06/16
  * 重新构建InstantGame package成为Package Manager中com.unity.autostreaming, com.unity.autostreaming.ccd 和 com.unity.instantgame三个package;
@@ -261,6 +274,15 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
  * 新增Il2cpp strip engine code的支持，开启后libunity.so会减小，但不再作为引擎共享文件
  * 新增Text Mesh Pro中font Texture的streaming支持
 
-## 2019.4.9f1c104  --  2021/06/27
-  * 优化游戏启动速度
-  * 新增Badge锁定功能，用于保护线上版本
+## 2019.4.9f1c102  --  2021/05/10
+ * 新增了Font资源的Streaming功能
+ * 新增了Animation资源的Streaming功能
+ * 新增了从MegaApp连接Unity profiler和debug的支持
+
+## 2019.4.9f1c101  --  2021/04/09
+ * 首次发布
+ * 支持字节小游戏平台
+ * 支持Texture资源的Streaming功能
+ * 支持Audio资源的Streaming功能
+ * 支持Mesh资源的Streaming功能
+ * 支持Scene资源的Streaming功能
