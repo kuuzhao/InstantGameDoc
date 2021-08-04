@@ -80,11 +80,13 @@ Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作�
 
 ![](Ig_doc_pic/create_ccd_project.png)
 
-* 创建完成后，网页将自动跳转到Endless_Runner项目的Overview页面，点击Content Delivery → Instant Game App ID，点击右上角Open按钮，填写信息后即可获得Instant Game App ID；
+* 创建完成后，网页将自动跳转到Endless_Runner项目的Overview页面，点击Content Delivery → COS Key 手动触发Cos Key的生成 (该步骤暂时需要，后续将修复移除);
+![](Ig_doc_pic/coskey.png)
+
+* 点击Content Delivery → Instant Game App ID，点击右上角Open按钮，填写信息后即可获得Instant Game App ID；
+![](Ig_doc_pic/open_instantgame.png)
 
 * 复制该字符串并填写到Configuration窗口的InstantGame AppId输入框中 ，完成后单击Refresh按钮拉取Endless_Runner的Bucket/Badge 信息；
-
-![](Ig_doc_pic/open_instantgame.png)
 
 * 选择或者创建新的Bucket/Badge 并使用。Endless_Runner项目是一个新建的CCD项目，当前并不存在bucket和badge，因此我们新建一个名为Endless_Runner的bucket，并在该bucket下新建一个名为v1的badge；
 
