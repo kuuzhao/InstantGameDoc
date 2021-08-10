@@ -226,6 +226,8 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 
 * 如果遇到游戏启动时crash，并输出类似 "Cannot create web request without initializing the system"的错误提示，请取消勾选stripEngineCode
 
+* 如果遇到游戏启动时crash，并输出类似 "Class com.unity.instantgame.UnityPlayerActivity not found" 以及 "No original dex files found for dex location .../first.zip" 的错误提示，请检查first.zip内是否有中文名的资源
+
 * 如果游戏已使用c102及以前的版本转换，迁移到新版本请删除Assets/Plugins/InstantGame 和Assets/InstantGameData目录后重新构建资源；
 
 # 游戏版本更新打包流程：
