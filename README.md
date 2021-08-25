@@ -94,7 +94,11 @@ Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作�
 CCD会为每一个Bucket自动生成一个名为latest的badge，该badge位置会自动更新，且始终指向最新的资源版本，因此**不要在发布公开版本时使用latest**，以免后续资源更新时影响已发布版本。
 
  ## 6. AB中的资源列表（可选）
-如果游戏使用AssetBundle building map打包AB，目前我们无法自动搜索出这些AB引用了哪些资源，因此需要用户提供AB中的资源列表。在Auto Streaming -> Configuration窗口， 点击Custom AB Assets右侧的Browse 按钮选择一个文本格式的资源列表文件（首行为资源总数，之后每行为一个资源路径）。
+我们希望把AB中的重度资源（Texture、Mesh等）抽取出来，放到云上，按需下载加载。这样可以大大减小AB的体积。这对于减小首包、减小AB下载时间都很有帮助。为了实现这个目的，InstantGame工具需要搜索AB中的资源。Unity支持两种方式指定哪些资源会被打包到哪个AB中：
+- 在UnityEditor的Inspector中设置资源的AssetBundle名称
+- 通过BuildPipeline.BuildAssetBundles(string outputPath, AssetBundleBuild[] builds, ...)在代码中动态指定
+
+对于第二种情况，目前我们无法自动搜索出这些AB、以及他们引用了哪些资源。因此需要用户提供AB中的资源列表。在Auto Streaming -> Configuration窗口， 点击Custom AB Assets右侧的Browse 按钮选择一个文本格式的资源列表文件（首行为资源总数，之后每行为一个资源路径）。这个文件中只需要提供root资源即可，root资源依赖的其它资源可以被工具自动搜索到。
 
 ![](Ig_doc_pic/custom_ab.png)
 
