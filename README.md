@@ -5,6 +5,7 @@ Unity Instant Game是Unity最新的小游戏解决方案，可以轻松将高品
 
 ## [字节小游戏上线指南](https://bytedance.feishu.cn/docs/doccn1iD3ojIypRFORZOcRoEf1g)
 ## [快手小游戏 Unity Instant Game 接入说明](https://docs.qingque.cn/d/home/eZQCxPZeFJeasEKOxlcGm0W8D#section=h.w6ztipwh5ixw)
+## [手Q小游戏 Unity Instant Game 接入说明](https://q.qq.com/wiki/)
 
 # 安装定制版Unity Editor
 Unity Instant Game定制版引擎现已登陆Unity官方网站, 前往[https://unity.cn/instantgame](https://unity.cn/instantgame "Unity Instant Game")页面即可下载最新版本。如您未安装Unity Hub请按照网页提示或者前往[Unity Hub](https://unity.cn/releases )页面安装，然后从Intant Game页面点击从Hub下载，在弹出的Hub页面中，确认勾选JDK、SDK、NDK，然后点击Install按钮即可。
@@ -39,31 +40,31 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 
  ## 2. 添加InstantGame需要Package
 
-打开Package Manager，勾选 Show preview packages, 搜索“Instant Game”, 点击“install”安装package，将安装以下三个package:
+ * 打开Package Manager，勾选 Show preview packages, 搜索“Instant Game”, 点击“install”安装package，将安装以下三个package最新版本:
 ![](Ig_doc_pic/add_packages_instantgame.png)
 ![](Ig_doc_pic/add_packages_autostreaming.png)
 
-对于新建的工程，三个package已经自动加到工程中，可以跳过该步骤。
+ * 切换到built-in packages，找到AutoStreaming模块，点击右下角的enable按钮进行添加
+ 
+ ![](Ig_doc_pic/add_module_autostreaming.png)
+
+对于新建的工程，上述package已经自动加到工程中，可以跳过该步骤。
 
  ## 3. 切换平台和选择压缩格式
-打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4HC 压缩格式。同时确认**取消勾选export project**。
+打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4 压缩格式。同时确认**取消勾选export project**。
 
 ![](Ig_doc_pic/buildSetting.png)
 
- ## 4. 打开Instant Game功能并应用推荐设置
+ ## 4. 打开Instant Game功能并选择小游戏平台
  InstantGame窗口位于Windows → Auto Streaming，该窗口包含了InstantGame的所有功能选项，打包小游戏前的资源streaming设置，以及上传资源到CCD的设置。
 
 ![](Ig_doc_pic/use_autostreaming.png)
 
 * **切换到Configuration窗口，勾选Use AutoStreaming**，打开Instant Game功能；如果后续需要使用正常的打包流程，取消勾选该选项即可。
 
-* **点击Apply recommended PlayerSettings按钮**，一键设置推荐的ProjectSettings；更多信息可以查看该按钮的鼠标悬浮提示。
+* **在Minigame Platform下拉列表中选择小游戏平台**，首次切换可能需要一段时间， **请耐心等待**。
 
-开启Animation和Font资源的Streaming(可选):
-
-* **勾选Use Animation Streaming**，实验性功能，如果项目中使用了Timeline，建议取消勾选。
-
-* **勾选Use Font Streaming**，实验性功能。
+* **(可选)勾选Use Font Streaming**，开启Font资源的Streaming；实验性功能。
 
 ![](Ig_doc_pic/experimental_features.png)
 
@@ -121,15 +122,15 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 ![](Ig_doc_pic/texture2.png)
 
- ## 8. 配置Audio/Mesh Streaming
-配置游戏内的Audio/Mesh资源是否使用streaming功能。Instant Game支持将本地较大的音频和 mesh 资源内的数据从游戏首包/AB 中抽离出来，部署CCD服务器上。当游戏首次使用到该Audio/Mesh资源时，将触发引擎后台线程下载资源数据，完成后自动加载使用。
+ ## 8. 配置Audio/Mesh/Animation Streaming
+配置游戏内的Audio/Mesh资源是否使用streaming功能。Instant Game支持将本地较大的音频和 mesh等资源内的数据从游戏首包/AB 中抽离出来，部署CCD服务器上。当游戏首次使用到该Audio/Mesh资源时，将触发引擎后台线程下载资源数据，完成后自动加载使用。
 
-**使用流程**：点击 Sync Audios/Meshes → 勾选 RT Mem 较大（例如大于5K）的资源
+**使用流程**：点击 Sync Audios/Meshes/Animation → 勾选 RT Mem 较大（例如大于5K）的资源
 
-如果某个Mesh勾选了Streaming导致游戏出现问题（勾选Streaming会使mesh的数据延迟，在代码中对该mesh进行了读写操作， 可能出现问题），取消勾选该 mesh 即可。
+如果某个Audio/Mesh/Animation勾选了Streaming导致游戏出现问题（勾选Streaming会使Audio/Mesh的数据延迟，在代码中对该Audio/Mesh进行了读写操作， 可能出现问题），取消勾选该 Audio/Mesh/Animation 即可。
 
  ## 9. 场景Streaming
-将BuildSettings 中的场景，打包成 AssetBundle，并部署到CCD服务器上。开发者像往常一样通过 SceneManager 调用 LoadScene/LoadSceneAsync。底层将自动触发下载，完成后自动加载场景。
+选择BuildSettings 中的场景，打包成 AssetBundle，并部署到CCD服务器上。开发者像往常一样通过 SceneManager 调用 LoadScene/LoadSceneAsync。底层将自动触发下载，完成后自动加载场景。
 
 | 功能  | 描述 |
 | ------------- | ------------- |
@@ -137,9 +138,9 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 | Force Rebuild | 勾选后，将强制重新生成 Scene 的 AssetBundles； |
 | Generate AssetBundle | 生成场景的 AB，以及 placeholderAB。 |
 
-**使用流程**： Sync Scenes → 如果已经生成过场景AB，勾选Force Rebuild → Generate AssetBundles.
+**使用流程**： Sync Scenes → 选择需要streaming的场景 → 如果已经生成过场景AB，勾选Force Rebuild → Generate AssetBundles.
 
-Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前面的操作。
+Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming，请务必先执行前面的操作。
 
  ## 10. 游戏AB/Addressable重打包（可选）
  * 游戏工程使用了Asset bundle ，需要在配置好Texture/Audio/Mesh Streaming后，重新build Asset bundle（删除已有AB, 再打包）；
@@ -186,6 +187,8 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 
 ## 13. 提交小游戏平台并测试
 
+提交小游戏平台测试后，建议
+
 ### 字节小游戏
 
 * 游戏上传完成后，打开字节发布页面，填写发布信息，选择游戏工程根目录下的IGOutput/ig_bytedance.json后点击发布按钮，生成二维码后，使用抖音或头条App扫码即可自测试。
@@ -193,12 +196,13 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 ![](Ig_doc_pic/bytedance_json.png)
 
 ### 快手小游戏
- * 游戏上传完成后，通过[快手小游戏发布流程](https://docs.qingque.cn/d/home/eZQCxPZeFJeasEKOxlcGm0W8D), 将游戏工程根目录下的IGOutput/ig_kwai.json提交审核，完成后使用最新版快手 App 扫描生成的二维码即可自测试。
+ * 游戏上传完成后，通过[快手小游戏发布流程](https://docs.qingque.cn/d/home/eZQCxPZeFJeasEKOxlcGm0W8D), 将游戏工程根目录下的IGOutput/ig_kwai.json提交测试，完成后使用最新版快手 App 扫描生成的二维码即可自测试。
 ![](Ig_doc_pic/publish_to_kwai.png)
 ![](Ig_doc_pic/kwai_json.png)
 ### 手Q小游戏
- * TBA
-
+ * 游戏上传完成后,前往[手Q小游戏发布](https://q.qq.com/#/release)页面，将游戏工程根目录下的IGOutput/ig_shouq.json提交测试，完成后使用最新版手Q App 扫描生成的二维码即可自测试。
+![](Ig_doc_pic/publish_to_shouq.png)
+![](Ig_doc_pic/shouq_json.png)
 ## 补充说明
 ### 功能：
 * Instant Game不支持对使用Packing Tag的Sprite 的Streaming，仅支持SpriteAtlas的Streaming；但可以通过InstantGame提供的功能将使用Packing Tag的Sprite转为支持Streaming的SpriteAtlas。当项目的Play Settings/Editor/Sprite Packer/Mode 为Enable For Build (Legacy Sprite Packer)或Always Enable(Legacy Sprite Packer)时，Instant Game界面才会显示ConvertLegacySpritePacker按钮
@@ -222,13 +226,13 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 * 如果操作失误，上传文件到CCD时覆盖了已有版本的badge，请前往CCD网站将Badge标签设置回来
 ![](Ig_doc_pic/reset_badge.png)
 
-* 如果定制版Unity不是从从Unity Hub安装的，请使用Hub下载官方版本的unity2019.4.9f1c1并勾选SDK、NDK，完成后请打开定制版Unity 的 Edit → Preference → External Tools窗口，将JDK，SDK，NDK按如下路径设置，然后重启Editor
+* 如果定制版Unity不是从从Unity Hub安装的，请使用Hub下载官方版本的unity 2019.4.29f1c1并勾选SDK、NDK，完成后请打开定制版Unity 的 Edit → Preference → External Tools窗口，将JDK，SDK，NDK按如下路径设置，然后重启Editor
 
 ![](Ig_doc_pic/sdk.png)
 
-* 如果打包过程出现异常，请打开PackageManger，重新安装步骤2中的三个package以确保package版本正确；
+* 如果打包过程出现异常，请打开PackageManger，重新安装步骤2中的package以确保package版本最新；
 
-* 如果遇到游戏启动时crash，并输出类似 "Cannot create web request without initializing the system"的错误提示，请取消勾选stripEngineCode
+* 如果遇到游戏启动后一直黑屏/花屏，并且游戏开启了strip engine code选项，请确认步骤2中built-in package Auto Streaming已启用
 
 * 如果遇到游戏启动时crash，并输出类似 "Class com.unity.instantgame.UnityPlayerActivity not found" 以及 "No original dex files found for dex location .../first.zip" 的错误提示，请检查first.zip内是否有中文名的资源
 
@@ -250,6 +254,13 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 * 其余操作与**prefab与Scene文件改动**时一致
 
 #  版本历史：
+
+## 2019.4.29f1c106  --  2021/08/31
+  * 升级Unity版本到2019.4.29f1
+  * 新增cubemap的streaming支持
+  * 新增animation streaming UI
+  * 新增streaming资源搜索功能
+  * 新增scene streaming选择功能
 
 ## 2019.4.9f1c105  --  2021/07/29
   * 新增Mac OS支持
