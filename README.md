@@ -62,7 +62,11 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 
 * **切换到Configuration窗口，勾选Use AutoStreaming**，打开Instant Game功能；如果后续需要使用正常的打包流程，取消勾选该选项即可。
 
-* **在Minigame Platform下拉列表中选择小游戏平台**，首次切换可能需要一段时间， **请耐心等待**。
+* **在Minigame Platform下拉列表中选择小游戏平台**。
+
+* **(推荐)切换图形API到GLES 3**, 在Project Settings → Player → Other Settings中取消Auto Graphics API,仅保留GLES 3，从而减少首包。
+
+![](Ig_doc_pic/gles3.png)
 
 * **(可选)勾选Use Font Streaming**，开启Font资源的Streaming；实验性功能。
 
@@ -165,6 +169,9 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming，请务�
 
 * CCD配置完成后，点击Build Instant Game按钮即可进行小游戏打包；
 
+* (可选)如果有自定的文件需要上传到CCD，手动拷贝文件到工程目录下的CustomCloudAssets文件夹内(CustomCloudAssets文件夹具体使用请参考补充说明部分)
+![](Ig_doc_pic/custom_cloud_assets_folder.png)
+
 * 打包完成后，点击Upload Built Instant Game 开始上传并部署小游戏到CCD云服务器；上传期间如果出现网络问题上传失败，重新点击上传按钮即可，上传工作会从上一次失败的位置继续执行；
 
 * 完成部署后，使用MegaApp扫描下方的二维码即可运行小游戏，该二维码仅供MegaApp测试使用；
@@ -212,6 +219,15 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming，请务�
 * 如果il2cpp游戏首包超过20M，可以尝试开启stripEngineCode，可减少首包约3M左右，但strip后的引擎文件不再共享
 
 * 非字节平台可选择使用Mono打包，但必须使用 .Net 4.x Api
+
+* CustomCloudAssets目录下的文件(暂不支持子文件夹)将在点击Auto Streaming → Configuration → Upload to CCD时随其他资源文件一起上传到CCD，文件的下载地址为：
+ ![](Ig_doc_pic/custom_cloud_assets_url.png)
+使用AutoStreaming.CustomCloudAssetsRoot字段，需要启用步骤2中built-in package Auto Streaming；
+另外在Edit → Preferences → External页面点击 Regenerate project files重新生成 .csproj文件，可以避免在VS中因dll引用丢失报错。
+ ![](Ig_doc_pic/regenerate_project.png)
+
+如因其他原因无法使用AutoStreaming.CustomCloudAssetsRoot字段，可以选择手动拼接URL，拼接规则为
+**{Configuration页面可复制的Auto Streaming Path} + "/CUS%252F" + {自定义文件名}**。
 
 ### 建议：
 * 推荐所有Texture都使用ETC或者ETC2压缩格式，从而大幅降低游戏内存占用并小幅减小场景AB和首包的size
