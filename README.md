@@ -225,10 +225,11 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming，请务�
 使用AutoStreaming.CustomCloudAssetsRoot字段，需要启用步骤2中built-in package Auto Streaming；
 另外在Edit → Preferences → External页面点击 Regenerate project files重新生成 .csproj文件，可以避免在VS中因dll引用丢失报错。
  ![](Ig_doc_pic/regenerate_project.png)
-
 如因其他原因无法使用AutoStreaming.CustomCloudAssetsRoot字段，可以选择手动拼接URL，拼接规则为
 **{Configuration页面可复制的Auto Streaming Path} + "/CUS%252F" + {自定义文件名}**。
 
+* 如代码中有自定义打包脚本，可通过调用InstantGame提供的BuildPlayer接口打包InstantGame
+ ![](Ig_doc_pic/build_instantgame.png)
 ### 建议：
 * 推荐所有Texture都使用ETC或者ETC2压缩格式，从而大幅降低游戏内存占用并小幅减小场景AB和首包的size
 
@@ -271,12 +272,13 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming，请务�
 
 #  版本历史：
 
-## 2019.4.29f1c106  --  2021/08/31
+## 2019.4.29f1c106  --  2021/09/13
   * 升级Unity版本到2019.4.29f1
   * 新增cubemap的streaming支持
+  * 新增blendshape类型Mesh的streaming支持
   * 新增animation streaming UI
   * 新增streaming资源搜索功能
-  * 新增scene streaming选择功能
+  * 新增scene streaming可选功能
 
 ## 2019.4.9f1c105  --  2021/07/29
   * 新增Mac OS支持
