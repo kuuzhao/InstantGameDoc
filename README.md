@@ -224,7 +224,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming，请务�
  ![](Ig_doc_pic/custom_cloud_assets_url.png)
 使用AutoStreaming.CustomCloudAssetsRoot字段，需要启用步骤2中built-in package Auto Streaming；
 另外在Edit → Preferences → External页面点击 Regenerate project files重新生成 .csproj文件，可以避免在VS中因dll引用丢失报错。
- ![](Ig_doc_pic/regenerate_project.png)
+ ![](Ig_doc_pic/regenerate_csproj_files.png)
 如因其他原因无法使用AutoStreaming.CustomCloudAssetsRoot字段，可以选择手动拼接URL，拼接规则为
 **{Configuration页面可复制的Auto Streaming Path} + "/CUS%252F" + {自定义文件名}**。
 
