@@ -188,7 +188,10 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 
 ### 字节小游戏
 
-* 游戏上传完成后，打开字节发布页面，填写发布信息，选择游戏工程根目录下的IGOutput/ig_bytedance.json后点击发布按钮，生成二维码后，使用抖音或头条App扫码即可自测试。
+* 参照[StarkSDK_Unity文档-ig版](https://bytedance.feishu.cn/docs/doccnUBXqLK4YoSj6cj1tDx5Qeb) 下载字节小游戏工具，安装如下三个字节小游戏工具, **请安装带有Unity Ig Tools的版本**
+![](Ig_doc_pic/bytedance_plugins.png)
+
+* 游戏上传到CCD后，打开字节发布页面，填写发布信息，选择游戏工程根目录下的IGOutput/ig_bytedance.json后点击发布按钮，生成二维码后，使用抖音或头条App扫码即可自测试。
 ![](Ig_doc_pic/publis_to_bytedance.png)
 ![](Ig_doc_pic/bytedance_json.png)
 
@@ -199,6 +202,15 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 ### 手Q小游戏
  * TBA
 
+## 13. 小游戏提审及发布
+* 自测完成后，在小游戏平台将当前测试版本提交审核，测试版本转为提审版本, 小游戏平台方审核通过后即可发布，提审版本转为发布版本
+* **小游戏提审后，当前使用的CCD badge需要锁定，避免后续覆盖提审或者上线版本**
+    通过点击 Badge to Use最右边的lock按钮可以手动将当前选定的badge锁住，避免被覆盖
+![](Ig_doc_pic/lock.png)
+
+* 字节小游戏平台可以通过填写字节小游戏的Appid自动锁住提审和发布版本(**该功能在c105版本失效**)
+![](Ig_doc_pic/bytedance_lock1.png)
+![](Ig_doc_pic/bytedance_lock2.png)
 ## 补充说明
 ### 功能：
 * Instant Game不支持对使用Packing Tag的Sprite 的Streaming，仅支持SpriteAtlas的Streaming；但可以通过InstantGame提供的功能将使用Packing Tag的Sprite转为支持Streaming的SpriteAtlas。当项目的Play Settings/Editor/Sprite Packer/Mode 为Enable For Build (Legacy Sprite Packer)或Always Enable(Legacy Sprite Packer)时，Instant Game界面才会显示ConvertLegacySpritePacker按钮
@@ -248,6 +260,25 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 * Texture 资源变动： 重新 sync， 如果变动的texture原本勾选了streaming，或者有新的texture加入streaming， 勾选force rebuild,  重新打包AB,  并重新生成placeholder
 * audio/mesh资源变动: 重新 sync即可
 * 其余操作与**prefab与Scene文件改动**时一致
+
+# FAQ:
+1. 游戏刚启动就闪退，安卓ADB log中报error："empty scene name， quit application"
+* 当Build settings里面的Scene列表为空时，打包InstantGame不会自动打包当前打开的场景，请确认项目的build settings-> Scene列表是否为空
+
+2. 游戏启动后，提示下载失败或者网络不给力
+* 游戏用到了某个Streaming的资源，但CCD服务器上没有，会提示网络不给力。可能发生的原因：重新打包了游戏apk或InstantGame，忘了点上传
+
+3. 游戏上传到CCD后，用MegaApp扫描二维码，提示 "This game does not support abi "armeabi-v7a/arm64-v8a""
+* 请确认unity项目的PlayerSettings ->Player-> other Settings 中同时勾选了32和64位ABI
+![](Ig_doc_pic/abi.png)
+4. 打包好的游戏，上传到抖音后，部分或全部手机启动闪退，无法进入游戏
+* 部分手机闪退请确认游戏是否同时打包32位和64位，所有手机都无法进入，请检查上传抖音的json文件和CCD当前的文件版本是否一致（MD5相同），是否被覆盖
+
+5. URP游戏上传json文件到字节小游戏提示“发布失败： 设置错误：场景中的Canvas Render Mode 不能为Overlay”， 录屏缺少后效，UI
+* 请升级字节小游戏Stark SDK到5.6.0之后的版本，新版SDK依旧会显示该提示，但录屏异常问题已修复
+
+6. 如果我什么都没有改变，只是重复打了包，还需要上传吗?
+* 重新打包的时候，会重新生成首包文件，每次生成的首包MD5都不一样，小游戏平台在启动游戏前会校验首包文件的MD5，所以需要重新上传
 
 #  版本历史：
 
