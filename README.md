@@ -35,20 +35,23 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 在接下来的文档中，将以[Endless Runner](Ig_doc_file/EndlessRunner.unitypackage)游戏为示例，介绍如何使用Instant Game功能转换小游戏，游戏工程可从以下链接获取[EndlessRunner.unitypackage](Ig_doc_file/EndlessRunner.unitypackage)。
 
  ## 1. 新建Endless Runner工程
-使用定制版引擎 Unity2019.4.9f1c105新建工程Endless Runner，下载[EndlessRunner.unitypackage](Ig_doc_file/EndlessRunner.unitypackage)并导入工程。
+使用定制版引擎 Unity2019.4.9f1c106新建工程Endless Runner，下载[EndlessRunner.unitypackage](Ig_doc_file/EndlessRunner.unitypackage)并导入工程。
 ![](Ig_doc_pic/import_project.png)
 
  ## 2. 添加InstantGame需要Package
 
- * 打开Package Manager，勾选 Show preview packages, 搜索“Instant Game”, 点击“install”安装package，将安装以下三个package最新版本:
+ * 打开Package Manager，勾选 Show preview packages, 搜索“Instant Game”, 点击“install”安装package，将安装以下package最新版本:
 ![](Ig_doc_pic/add_packages_instantgame.png)
-![](Ig_doc_pic/add_packages_autostreaming.png)
+
+测试版本点击Package Manager左上角的＋按钮-> Add package from disk，选择InstantGame Package文件夹下的package.json文件
+
+![](Ig_doc_pic/local_package.png)
 
  * 切换到built-in packages，找到AutoStreaming模块，点击右下角的enable按钮进行添加
  
  ![](Ig_doc_pic/add_module_autostreaming.png)
 
-对于新建的工程，上述package已经自动加到工程中，可以跳过该步骤。
+对于新建的工程，AutoStreaming模块已经自动加到工程中，可以跳过该步骤。
 
  ## 3. 切换平台和选择压缩格式
 打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4 压缩格式。同时确认**取消勾选export project**。
@@ -140,11 +143,18 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 | ------------- | ------------- |
 | Sync Scenes | 获取 build setting 中的 Scene，并在下方显示； |
 | Force Rebuild | 勾选后，将强制重新生成 Scene 的 AssetBundles； |
-| Generate AssetBundle | 生成场景的 AB，以及 placeholderAB。 |
+| Generate AssetBundle | 生成场景的 AB，以及 placeholderAB; |
+| Sync SharedAssets | 搜索勾选了streaming的场景中的共同引用到的资源。 |
 
-**使用流程**： Sync Scenes → 选择需要streaming的场景 → 如果已经生成过场景AB，勾选Force Rebuild → Generate AssetBundles.
+为实现场景的按需加载，我们把每个场景单独打包成一个AB。因此被多个场景引用的资源，会被重复打包进多个scene AB中，可能导致scene AB总量过大，浪费场景下载时间和CCD流量。
+为了解决这个问题，我们把这些共享资源打包进一个额外的共享AB中，让scene AB依赖于这个共享AB，避免冗余。
+由于共享AB需要在首场景前准备好，因而不宜过大(小于5MB)，我们建议仅勾选对场景AB总量影响严重的资源，如：
+* 被大多数场景引用到的资源(References中包含场景序号较多的资源)
+* 本身较大的shader等资源
 
-Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming，请务必先执行前面的操作。
+**使用流程**： Sync Scenes → 选择需要streaming的场景 → Sync SharedAssets → 勾选SharedAssets资源 → 如果已经生成过场景AB，勾选Force Rebuild → Generate AssetBundles.
+
+Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置，请务必先执行前面的操作。
 
  ## 10. 游戏AB/Addressable重打包（可选）
  * 游戏工程使用了Asset bundle ，需要在配置好Texture/Audio/Mesh Streaming后，重新build Asset bundle（删除已有AB, 再打包）；
@@ -301,15 +311,23 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming，请务�
 6. 如果我什么都没有改变，只是重复打了包，还需要上传吗?
 * 重新打包的时候，会重新生成首包文件，每次生成的首包MD5都不一样，小游戏平台在启动游戏前会校验首包文件的MD5，所以需要重新上传
 
+7. c106版本打包的游戏，启动后黑屏很长时间
+* c106版本新增了首包延迟加载的功能，首包中的部分资源将在游戏splash期间下载，因此建议所有游戏都添加一张Splash图片，改善游戏体验
+
 #  版本历史：
 
-## 2019.4.29f1c106  --  2021/09/13
+## 2019.4.29f1c106  --  2021/11/30
   * 升级Unity版本到2019.4.29f1
   * 新增cubemap的streaming支持
   * 新增blendshape类型Mesh的streaming支持
   * 新增animation streaming UI
   * 新增streaming资源搜索功能
   * 新增scene streaming可选功能
+  * 新增scene streaming中的shared scene asset功能，用于减少scene AB的资源冗余
+  * 新增首包延迟加载功能，首包中的部分资源将在游戏splash期间下载
+  * 新增AutoStreaming.CustomCloudAssetsRoot字段提供Custom资源的下载根路径
+  * 优化Sync资源的时间和打包instantgame的时间
+  * instantgame package合为一个，并在Package Manager中上线
 
 ## 2019.4.9f1c105  --  2021/07/29
   * 新增Mac OS支持
