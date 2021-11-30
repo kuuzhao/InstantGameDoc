@@ -207,10 +207,6 @@ Scene Streaming 依赖于 Texture/Audio/Mesh Streaming，请务必先执行前�
 * **小游戏提审后，当前使用的CCD badge需要锁定，避免后续覆盖提审或者上线版本**
     通过点击 Badge to Use最右边的lock按钮可以手动将当前选定的badge锁住，避免被覆盖
 ![](Ig_doc_pic/lock.png)
-
-* 字节小游戏平台可以通过填写字节小游戏的Appid自动锁住提审和发布版本(**该功能在c105版本失效**)
-![](Ig_doc_pic/bytedance_lock1.png)
-![](Ig_doc_pic/bytedance_lock2.png)
 ## 补充说明
 ### 功能：
 * Instant Game不支持对使用Packing Tag的Sprite 的Streaming，仅支持SpriteAtlas的Streaming；但可以通过InstantGame提供的功能将使用Packing Tag的Sprite转为支持Streaming的SpriteAtlas。当项目的Play Settings/Editor/Sprite Packer/Mode 为Enable For Build (Legacy Sprite Packer)或Always Enable(Legacy Sprite Packer)时，Instant Game界面才会显示ConvertLegacySpritePacker按钮
