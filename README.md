@@ -68,6 +68,7 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 * **在Minigame Platform下拉列表中选择小游戏平台**。
 
 * **(推荐)切换图形API到GLES 3**, 在Project Settings → Player → Other Settings中取消Auto Graphics API,仅保留GLES 3，从而减少首包。
+该步骤可能花费较长的时间，请耐心等待。
 
 ![](Ig_doc_pic/gles3.png)
 
@@ -143,14 +144,17 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 | ------------- | ------------- |
 | Sync Scenes | 获取 build setting 中的 Scene，并在下方显示； |
 | Force Rebuild | 勾选后，将强制重新生成 Scene 的 AssetBundles； |
-| Generate AssetBundle | 生成场景的 AB，以及 placeholderAB; |
+| Generate AssetBundle | 生成场景的 AB，以及场景共享AB; |
 | Sync SharedAssets | 搜索勾选了streaming的场景中的共同引用到的资源。 |
 
+![](Ig_doc_pic/shared_scene_assets_ui.png)
 为实现场景的按需加载，我们把每个场景单独打包成一个AB。因此被多个场景引用的资源，会被重复打包进多个scene AB中，可能导致scene AB总量过大，浪费场景下载时间和CCD流量。
 为了解决这个问题，我们把这些共享资源打包进一个额外的共享AB中，让scene AB依赖于这个共享AB，避免冗余。
-由于共享AB需要在首场景前准备好，因而不宜过大(小于5MB)，我们建议仅勾选对场景AB总量影响严重的资源，如：
+由于共享AB(下图选中文件)需要在首场景前准备好，因而不宜过大(小于5MB)，我们建议仅勾选对场景AB总量影响严重的资源，如：
 * 被大多数场景引用到的资源(References中包含场景序号较多的资源)
 * 本身较大的shader等资源
+
+![](Ig_doc_pic/shared_scene_assets_ab.png)
 
 **使用流程**： Sync Scenes → 选择需要streaming的场景 → Sync SharedAssets → 勾选SharedAssets资源 → 如果已经生成过场景AB，勾选Force Rebuild → Generate AssetBundles.
 
@@ -174,22 +178,22 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 
  ## 11. 打包小游戏并部署到CCD云服务器
 * 打开Auto Streaming -> Configuration窗口，选择使用的bucket和badge；
+如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**；
 
-* 如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**；
+![](Ig_doc_pic/config_ccd.png)
 
 * CCD配置完成后，点击Build Instant Game按钮即可进行小游戏打包；
 
-* (可选)如果有自定的文件需要上传到CCD，手动拷贝文件到工程目录下的CustomCloudAssets文件夹内(CustomCloudAssets文件夹具体使用请参考补充说明部分)
+* (可选)如果有自定义的文件(如游戏边玩边下的AB)需要上传到CCD，手动拷贝文件到工程目录下的CustomCloudAssets文件夹内(CustomCloudAssets文件夹具体使用请参考补充说明部分)
 ![](Ig_doc_pic/custom_cloud_assets_folder.png)
 
 * 打包完成后，点击Upload Built Instant Game 开始上传并部署小游戏到CCD云服务器；上传期间如果出现网络问题上传失败，重新点击上传按钮即可，上传工作会从上一次失败的位置继续执行；
 
+* **打包和上传中间，请不要改动CCD配置，否则游戏运行时将找不到需要的资源。**
+
 * 完成部署后，使用MegaApp扫描下方的二维码即可运行小游戏，该二维码仅供MegaApp测试使用；
 
 * 如果遇到打包失败的问题，请先参照**补充说明**部分, 确认JDK/SDK/NDK配置正确。
-![](Ig_doc_pic/qr.png)
-
-打包和上传中间，请不要改动CCD配置，否则游戏运行时将找不到需要的资源。
 
  ## 12. 小游戏运行与测试
 * MegaApp app中仅支持游戏自身的功能测试，**广告支付等功能需要在平台方发布测试版**后使用。已接入字节SDK的游戏，受平台SDK限制需打包**Development版本**才可以在MegaApp app运行。
@@ -222,15 +226,17 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 ![](Ig_doc_pic/publish_to_shouq.png)
 ![](Ig_doc_pic/shouq_json.png)
 
-## 14. 小游戏提审及发布
+## 14. 小游戏提审及发布和版本锁定
 * 自测完成后，在小游戏平台将当前测试版本提交审核，测试版本转为提审版本, 小游戏平台方审核通过后即可发布，提审版本转为发布版本
-* **小游戏提审后，当前使用的CCD badge需要锁定，避免后续打包覆盖提审或者上线版本**
+* **小游戏提审后，当前使用的CCD badge需要锁定，避免后续打包覆盖提审或者上线版本**。
     通过点击 Badge to Use最右边的lock按钮可以手动将当前选定的badge锁住，避免被覆盖
 ![](Ig_doc_pic/lock.png)
 
 * 字节小游戏平台可以通过填写字节小游戏的Appid自动锁住提审和发布版本
 ![](Ig_doc_pic/bytedance_lock1.png)
 ![](Ig_doc_pic/bytedance_lock2.png)
+
+* **小游戏平台启动小游戏前会校验游戏首包文件MD5，覆盖提审或者上线版本将导致，游戏无法启动！！！**
 
 ## 补充说明
 ### 功能：
@@ -242,13 +248,14 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 
 * 非字节平台可选择使用Mono打包，但必须使用 .Net 4.x Api
 
-* CustomCloudAssets目录下的文件(暂不支持子文件夹)将在点击Auto Streaming → Configuration → Upload to CCD时随其他资源文件一起上传到CCD，文件的下载地址为：
+* CustomCloudAssets目录下的文件(C106版本后支持子目录)将在点击Auto Streaming → Configuration → Upload to CCD时随其他资源文件一起上传到CCD，文件的下载地址为：
  ![](Ig_doc_pic/custom_cloud_assets_url.png)
 使用AutoStreaming.CustomCloudAssetsRoot字段，需要启用步骤2中built-in package Auto Streaming；
 另外在Edit → Preferences → External页面点击 Regenerate project files重新生成 .csproj文件，可以避免在VS中因dll引用丢失报错。
  ![](Ig_doc_pic/regenerate_csproj_files.png)
 如因其他原因无法使用AutoStreaming.CustomCloudAssetsRoot字段，可以选择手动拼接URL，拼接规则为
-**{Configuration页面可复制的Auto Streaming Path} + "/CUS%252F" + {自定义文件名}**。
+**{Configuration页面可复制的Auto Streaming Path} + "/CUS%252F" + {自定义文件名}**，
+文件名内所有的“/”需替换为“%252F”。
 
 * 如代码中有自定义打包脚本，可通过调用InstantGame提供的BuildPlayer接口打包InstantGame
  ![](Ig_doc_pic/build_instantgame.png)
@@ -277,6 +284,9 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 
 * 如果游戏已使用c102及以前的版本转换，迁移到新版本请删除Assets/Plugins/InstantGame 和Assets/InstantGameData目录后重新构建资源；
 
+* 不同版本的InstantGame定制 Editor生成的streaming文件存在不兼容的情况，使用新版本打包前，请点击Clear All Caches清理所有streaming文件，然后完全重新打包。
+Texture的placeholder 以及Auto Streaming的配置可复用。
+
 # 游戏版本更新打包流程：
 ## 仅代码改动：
 * 在Configuration增加一个新的badge并使用
@@ -293,40 +303,45 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 * 其余操作与**prefab与Scene文件改动**时一致
 
 # FAQ:
-1. 游戏刚启动就闪退，安卓ADB log中报error："empty scene name， quit application"
-* 当Build settings里面的Scene列表为空时，打包InstantGame不会自动打包当前打开的场景，请确认项目的build settings-> Scene列表是否为空
+1. 游戏刚启动就闪退，安卓ADB log中报error："empty scene name, quit application!!!"
+* 当Build settings里面的Scene列表为空时，打包InstantGame不会自动打包当前打开的场景，请确认项目的build settings-> Scene列表是否为空。
 
 2. 游戏启动后，提示下载失败或者网络不给力
-* 游戏用到了某个Streaming的资源，但CCD服务器上没有，会提示网络不给力。可能发生的原因：重新打包了游戏apk或InstantGame，忘了点上传
+* 游戏用到了某个Streaming的资源，但CCD服务器上没有，会提示网络不给力。可能发生的原因：重新打包了游戏apk或InstantGame，忘了点上传; 打包和上传中间，要改动了CCD配置。
 
 3. 游戏上传到CCD后，用MegaApp扫描二维码，提示 "This game does not support abi "armeabi-v7a/arm64-v8a""
-* 请确认unity项目的PlayerSettings ->Player-> other Settings 中同时勾选了32和64位ABI
+* 请确认unity项目的PlayerSettings ->Player-> other Settings 中同时勾选了32和64位ABI。
 ![](Ig_doc_pic/abi.png)
 4. 打包好的游戏，上传到抖音后，部分或全部手机启动闪退，无法进入游戏
-* 部分手机闪退请确认游戏是否同时打包32位和64位，所有手机都无法进入，请检查上传抖音的json文件和CCD当前的文件版本是否一致（MD5相同），是否被覆盖
+* 部分手机闪退请确认游戏是否同时打包32位和64位，所有手机都无法进入，请检查上传抖音的json文件和CCD当前的文件版本是否一致（MD5相同），是否被覆盖。
 
-5. URP游戏上传json文件到字节小游戏提示“发布失败： 设置错误：场景中的Canvas Render Mode 不能为Overlay”， 录屏缺少后效，UI
-* 请升级字节小游戏Stark SDK到5.6.0之后的版本，新版SDK依旧会显示该提示，但录屏异常问题已修复
+5. URP游戏上传json文件到字节小游戏提示“发布失败： 设置错误：场景中的Canvas Render Mode 不能为Overlay”， 录屏缺少后效和UI
+* 请升级字节小游戏Stark SDK到5.6.0之后的版本，Unity Ig Tools升级到最新版本，升级后可能依旧会显示该提示
+(上传json文件时可暂时取消勾选BuildSettings中的所有场景绕过，后续更新将修复)，但录屏异常问题已修复。
 
 6. 如果我什么都没有改变，只是重复打了包，还需要上传吗?
-* 重新打包的时候，会重新生成首包文件，每次生成的首包MD5都不一样，小游戏平台在启动游戏前会校验首包文件的MD5，所以需要重新上传
+* 重新打包的时候，会重新生成首包文件，每次生成的首包MD5都不一样，小游戏平台在启动游戏前会校验首包文件的MD5，所以需要重新上传。
 
-7. c106版本打包的游戏，启动后黑屏很长时间
-* c106版本新增了首包延迟加载的功能，首包中的部分资源将在游戏splash期间下载，因此建议所有游戏都添加一张Splash图片，改善游戏体验
+7. 游戏内有从AB和Resources文件夹加载资源的逻辑，做了streaming后该如何加载?
+* 对于Texture2D和SpriteAtlas，AutoStreaming使用了一个小分辨率的资源替换了原资源；
+对于AudioClip、Mesh和AnimationClip，AutoStreaming仅抽取了Asset中的重度数据，Asset对象依旧存在，
+因此可以按照原来的逻辑加载AB和Resources内的资源。
+但做了streaming之后，Asset内的数据不可立即访问，
+例如Mesh.vertices，Texture2D.GetPixels(),Texture2D.GetWidth()，AudioClip.LoadAudioData()
+等接口的调用可能会返回null或者不正确的结果。
 
 #  版本历史：
 
 ## 2019.4.29f1c106  --  2021/11/30
   * 升级Unity版本到2019.4.29f1
-  * 新增cubemap的streaming支持
-  * 新增blendshape类型Mesh的streaming支持
-  * 新增animation streaming UI
+  * 优化Sync资源的时间和打包instantgame的时间
+  * 新增animation streaming的UI界面
   * 新增streaming资源搜索功能
   * 新增scene streaming可选功能
   * 新增scene streaming中的shared scene asset功能，用于减少scene AB的资源冗余
-  * 新增首包延迟加载功能，首包中的部分资源将在游戏splash期间下载
+  * 新增cubemap的streaming支持，重新点击Sync Textures可找出所有引用的cubemap
+  * 新增blendshape类型Mesh的streaming支持，重新点击Sync Meshes可找出所有引用的cubemap
   * 新增AutoStreaming.CustomCloudAssetsRoot字段提供Custom资源的下载根路径
-  * 优化Sync资源的时间和打包instantgame的时间
   * instantgame package合为一个，并在Package Manager中上线
 
 ## 2019.4.9f1c105  --  2021/07/29
