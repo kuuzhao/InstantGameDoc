@@ -40,14 +40,10 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 
  ## 2. 添加InstantGame需要Package
 
- * 打开Package Manager，勾选 Show preview packages, 搜索“Instant Game”, 点击“install”安装package，将安装以下package最新版本:
+* 打开Package Manager，勾选 Show preview packages, 搜索“Instant Game”, 点击“install”安装package，将安装以下package最新版本:
 ![](Ig_doc_pic/add_packages_instantgame.png)
 
-测试版本点击Package Manager左上角的＋按钮-> Add package from disk，选择InstantGame Package文件夹下的package.json文件
-
-![](Ig_doc_pic/local_package.png)
-
- * 切换到built-in packages，找到AutoStreaming模块，点击右下角的enable按钮进行添加
+* 切换到built-in packages，找到AutoStreaming模块，点击右下角的enable按钮进行添加
  
  ![](Ig_doc_pic/add_module_autostreaming.png)
 
@@ -65,9 +61,10 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 
 * **切换到Configuration窗口，勾选Use AutoStreaming**，打开Instant Game功能；如果后续需要使用正常的打包流程，取消勾选该选项即可。
 
-* **在Minigame Platform下拉列表中选择小游戏平台**。
+* **在Minigame Platform下拉列表中选择小游戏平台**, 切换小游戏平台过程中将自动为工程设置推荐的PlayerSettings设置(Scripting Backend,Target Architectures，Strip Engine Code)。
+如果手动修改了推荐的PlayerSettings设置，可以通过点击 "Apply recommended PlayerSettings" 重新设置回来。
 
-* **(推荐)切换图形API到GLES 3**, 在Project Settings → Player → Other Settings中取消Auto Graphics API,仅保留GLES 3，从而减少首包。
+* **(推荐)切换图形API到GLES 3**, 在Project Settings → Player → Other Settings中取消Auto Graphics API,仅保留GLES 3，从而减少首包和下载的云资源。
 该步骤可能花费较长的时间，请耐心等待。
 
 ![](Ig_doc_pic/gles3.png)
@@ -97,10 +94,10 @@ Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作�
 
 * 选择或者创建新的Bucket/Badge 并使用。Endless_Runner项目是一个新建的CCD项目，当前并不存在bucket和badge，因此我们新建一个名为Endless_Runner的bucket，并在该bucket下新建一个名为v1的badge；
 
-![](Ig_doc_pic/configuration.png)
+![](Ig_doc_pic/config_ccd.png)
 
 
-CCD会为每一个Bucket自动生成一个名为latest的badge，该badge位置会自动更新，且始终指向最新的资源版本，因此**不要在发布公开版本时使用latest**，以免后续资源更新时影响已发布版本。
+CCD会为每一个Bucket自动生成一个名为latest的badge，每次上传文件，该badge位置都会自动更新，始终指向最新的资源版本，因此**不要在提交给小游戏平台的版本中使用latest**，以免后续资源更新时影响已发布版本。
 
  ## 6. AB中的资源列表（可选）
 我们希望把AB中的重度资源（Texture、Mesh等）抽取出来，放到云上，按需下载加载。这样可以大大减小AB的体积。这对于减小首包、减小AB下载时间都很有帮助。为了实现这个目的，InstantGame工具需要搜索AB中的资源。Unity支持两种方式指定哪些资源会被打包到哪个AB中：
@@ -156,29 +153,32 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 ![](Ig_doc_pic/shared_scene_assets_ab.png)
 
+* 打包完成后，请检查场景AB的大小，超过5MB的AB将导致游戏加载场景过慢；
+可以通过开源工具AssetStudio查看AB内哪些资源较大，然后针对性的优化
+
 **使用流程**： Sync Scenes → 选择需要streaming的场景 → Sync SharedAssets → 勾选SharedAssets资源 → 如果已经生成过场景AB，勾选Force Rebuild → Generate AssetBundles.
 
 Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置，请务必先执行前面的操作。
 
  ## 10. 游戏AB/Addressable重打包（可选）
- * 游戏工程使用了Asset bundle ，需要在配置好Texture/Audio/Mesh/Animation Streaming后，重新build Asset bundle（删除已有AB, 再打包）；
+* 游戏工程使用了Asset bundle ，需要在配置好Texture/Audio/Mesh/Animation Streaming后，重新build Asset bundle（删除已有AB, 再打包）；
 
 * 游戏工程使用了 addressable，同样需要在配置好Texture/Audio/Mesh/Animation Streaming后重新打包。
 
 
 在Endless Runner游戏工程中，使用了Asset bundle进行资源打包，因此需要完全重新打包，步骤如下：
 
- * 如果已经打包过AB，删除StreamingAssets目录下的AB包
+* 如果已经打包过AB，删除StreamingAssets目录下的AB包
  
 ![](Ig_doc_pic/delete_AB.png)
 
- * 点击 AssetBundles -> Build AssetBundles 重新打包AB
+* 点击 AssetBundles -> Build AssetBundles 重新打包AB
 
 ![](Ig_doc_pic/rebuild_AB.png)
 
  ## 11. 打包小游戏并部署到CCD云服务器
 * 打开Auto Streaming -> Configuration窗口，选择使用的bucket和badge；
-如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**；
+如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**，不建议使用latest badge；
 
 ![](Ig_doc_pic/config_ccd.png)
 
@@ -195,10 +195,16 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 
 * 如果遇到打包失败的问题，请先参照**补充说明**部分, 确认JDK/SDK/NDK配置正确。
 
- ## 12. 小游戏运行与测试
-* MegaApp app中仅支持游戏自身的功能测试，**广告支付等功能需要在平台方发布测试版**后使用。已接入字节SDK的游戏，受平台SDK限制需打包**Development版本**才可以在MegaApp app运行。
+* 打包完成后，点击下图中的Refresh按钮，并查看的Instant Game打包统计信息，确认以下几点：
+  * Architectures中有ARM64和ARMv7，保证64位和32位设备都能运行该游戏；
+  * 游戏首包（Startup Size）不宜超过20MB；下图中的示例游戏代码过多导致首包过大，可针对性的移除不必要的代码引用，开启代码和引擎Strip。
 
-* 从[Unity Instant Game](https://unity.cn/instantgame)网页下载MegaApp app并安装。该App中包含了一个BoatAttack 转成的Instant Game示例，同时也是Unity Instant Game的测试工具。
+![](Ig_doc_pic/ig_stats.png)
+
+ ## 12. 小游戏运行与测试
+* MegaApp app中仅支持游戏自身的功能测试，**广告支付等功能需要在平台方发布测试版**后使用。已接入字节小游戏SDK的游戏，请更新字节SDK到最新版本，旧版SDK需打包**Development版本**才可以在MegaApp app运行。
+
+* 从[Unity Instant Game](https://unity.cn/instantgame)网页下载c106版本下的MegaApp app并安装。该App中包含了一个BoatAttack 转成的Instant Game示例，同时也是Unity Instant Game的测试工具。
 
 ![](Ig_doc_pic/megaapp.png)
 
@@ -208,6 +214,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 
 ## 13. 提交小游戏平台并测试
 
+* **小游戏平台上的提审版本和发布版本都由测试版本转化而来，请不要在提交小游戏平台时使用CCD 的 latest Badge**
 ### 字节小游戏
 
 * 参照[StarkSDK_Unity文档-ig版](https://bytedance.feishu.cn/docs/doccnUBXqLK4YoSj6cj1tDx5Qeb) 下载字节小游戏工具，安装如下三个字节小游戏工具, **请安装带有Unity Ig Tools的版本**
@@ -218,11 +225,11 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 ![](Ig_doc_pic/bytedance_json.png)
 
 ### 快手小游戏
- * 游戏上传完成后，通过[快手小游戏发布流程](https://docs.qingque.cn/d/home/eZQCxPZeFJeasEKOxlcGm0W8D), 将游戏工程根目录下的IGOutput/ig_kwai.json提交测试，完成后使用最新版快手 App 扫描生成的二维码即可自测试。
+* 游戏上传完成后，通过[快手小游戏发布流程](https://docs.qingque.cn/d/home/eZQCxPZeFJeasEKOxlcGm0W8D), 将游戏工程根目录下的IGOutput/ig_kwai.json提交测试，完成后使用最新版快手 App 扫描生成的二维码即可自测试。
 ![](Ig_doc_pic/publish_to_kwai.png)
 ![](Ig_doc_pic/kwai_json.png)
 ### 手Q小游戏
- * 游戏上传完成后,前往[手Q小游戏发布](https://q.qq.com/#/release)页面，将游戏工程根目录下的IGOutput/ig_shouq.json提交测试，完成后使用最新版手Q App 扫描生成的二维码即可自测试。
+* 游戏上传完成后,前往[手Q小游戏发布](https://q.qq.com/#/release)页面，将游戏工程根目录下的IGOutput/ig_shouq.json提交测试，完成后使用最新版手Q App 扫描生成的二维码即可自测试。
 ![](Ig_doc_pic/publish_to_shouq.png)
 ![](Ig_doc_pic/shouq_json.png)
 
@@ -246,7 +253,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 
 * 如果il2cpp游戏首包超过20M，可以尝试开启stripEngineCode，可减少首包约3M左右，但strip后的引擎文件不再共享
 
-* 非字节平台可选择使用Mono打包，但必须使用 .Net 4.x Api
+* 非字节平台可选择使用Mono打包
 
 * CustomCloudAssets目录下的文件(C106版本后支持子目录)将在点击Auto Streaming → Configuration → Upload to CCD时随其他资源文件一起上传到CCD，文件的下载地址为：
  ![](Ig_doc_pic/custom_cloud_assets_url.png)
@@ -263,8 +270,6 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 * 推荐所有Texture都使用ETC或者ETC2压缩格式，从而大幅降低游戏内存占用并小幅减小场景AB和首包的size
 
 * 推荐使用Strip后的字体文件，即仅包含会使用到的字符的字体文件（如中文常用3000/6500字+英文字符+中英文标点），从而减小场景AB和首包的size。
-
-* 首包大小, mono不宜超过10M, il2cpp 不宜超过 20M,  场景AB不宜超过5M, 否则会导致下载/加载时间过长，影响体验
 
 * 打包游戏前建议将Managed Stripping Level开到游戏支持的最高级别，从而减小首包大小
 
@@ -284,7 +289,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 
 * 如果游戏已使用c102及以前的版本转换，迁移到新版本请删除Assets/Plugins/InstantGame 和Assets/InstantGameData目录后重新构建资源；
 
-* 不同版本的InstantGame定制 Editor生成的streaming文件存在不兼容的情况，使用新版本打包前，请点击Clear All Caches清理所有streaming文件，然后完全重新打包。
+* 不同版本的InstantGame定制 Editor生成的streaming文件存在不兼容的情况，使用新版本打包前，请点击Clear Cloud Assets清理所有streaming云资源文件，然后完全重新打包。
 Texture的placeholder 以及Auto Streaming的配置可复用。
 
 # 游戏版本更新打包流程：
@@ -333,46 +338,46 @@ Texture的placeholder 以及Auto Streaming的配置可复用。
 #  版本历史：
 
 ## 2019.4.29f1c106  --  2021/11/30
-  * 升级Unity版本到2019.4.29f1
-  * 优化Sync资源的时间和打包instantgame的时间
-  * 新增animation streaming的UI界面
-  * 新增streaming资源搜索功能
-  * 新增scene streaming可选功能
-  * 新增scene streaming中的shared scene asset功能，用于减少scene AB的资源冗余
-  * 新增cubemap的streaming支持，重新点击Sync Textures可找出所有引用的cubemap
-  * 新增blendshape类型Mesh的streaming支持，重新点击Sync Meshes可找出所有引用的cubemap
-  * 新增AutoStreaming.CustomCloudAssetsRoot字段提供Custom资源的下载根路径
-  * instantgame package合为一个，并在Package Manager中上线
+* 升级Unity版本到2019.4.29f1
+* 优化Sync资源的时间和打包instantgame的时间
+* 新增animation streaming的UI界面
+* 新增streaming资源搜索功能
+* 新增scene streaming可选功能
+* 新增scene streaming中的shared scene asset功能，用于减少scene AB的资源冗余
+* 新增cubemap的streaming支持，重新点击Sync Textures可找出所有引用的cubemap
+* 新增blendshape类型Mesh的streaming支持，重新点击Sync Meshes可找出所有引用的cubemap
+* 新增AutoStreaming.CustomCloudAssetsRoot字段提供Custom资源的下载根路径
+* instantgame package合为一个，并在Package Manager中上线
 
 ## 2019.4.9f1c105  --  2021/07/29
-  * 新增Mac OS支持
-  * 新增ParticleMeshRender上的Mesh streaming支持
-  * 新增场景lightmaps的streaming支持
-  * 新增快手小游戏平台支持
-  * 新增手Q小游戏平台支持
+* 新增Mac OS支持
+* 新增ParticleMeshRender上的Mesh streaming支持
+* 新增场景lightmaps的streaming支持
+* 新增快手小游戏平台支持
+* 新增手Q小游戏平台支持
 
 ## 2019.4.9f1c104  --  2021/06/27
-  * 优化游戏启动速度
-  * 新增Badge锁定功能，用于保护线上版本
-  * 新增readable Texture/Mesh Editor提示
+* 优化游戏启动速度
+* 新增Badge锁定功能，用于保护线上版本
+* 新增readable Texture/Mesh Editor提示
 
 ## 2019.4.9f1c103  --  2021/06/16
- * 重新构建InstantGame package成为Package Manager中com.unity.autostreaming, com.unity.autostreaming.ccd 和 com.unity.instantgame三个package;
- * 新增了Legacy Animation Clip的streaming支持
- * 优化生成placeholder的速度
- * 优化CCD文件上传的速度和稳定性
- * 新增Il2cpp strip engine code的支持，开启后libunity.so会减小，但不再作为引擎共享文件
- * 新增Text Mesh Pro中font Texture的streaming支持
+* 重新构建InstantGame package成为Package Manager中com.unity.autostreaming, com.unity.autostreaming.ccd 和 com.unity.instantgame三个package;
+* 新增了Legacy Animation Clip的streaming支持
+* 优化生成placeholder的速度
+* 优化CCD文件上传的速度和稳定性
+* 新增Il2cpp strip engine code的支持，开启后libunity.so会减小，但不再作为引擎共享文件
+* 新增Text Mesh Pro中font Texture的streaming支持
 
 ## 2019.4.9f1c102  --  2021/05/10
- * 新增了Font资源的Streaming功能
- * 新增了Animation资源的Streaming功能
- * 新增了从MegaApp连接Unity profiler和debug的支持
+* 新增了Font资源的Streaming功能
+* 新增了Animation资源的Streaming功能
+* 新增了从MegaApp连接Unity profiler和debug的支持
 
 ## 2019.4.9f1c101  --  2021/04/09
- * 首次发布
- * 支持字节小游戏平台
- * 支持Texture资源的Streaming功能
- * 支持Audio资源的Streaming功能
- * 支持Mesh资源的Streaming功能
- * 支持Scene资源的Streaming功能
+* 首次发布
+* 支持字节小游戏平台
+* 支持Texture资源的Streaming功能
+* 支持Audio资源的Streaming功能
+* 支持Mesh资源的Streaming功能
+* 支持Scene资源的Streaming功能
