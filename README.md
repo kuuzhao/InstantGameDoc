@@ -277,11 +277,11 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 * 如果操作失误，上传文件到CCD时覆盖了已有版本的badge，请前往CCD网站将Badge标签设置回来
 ![](Ig_doc_pic/reset_badge.png)
 
-* 如果定制版Unity不是从从Unity Hub安装的，请使用Hub下载官方版本的unity 2019.4.29f1c1并勾选SDK、NDK，完成后请打开定制版Unity 的 Edit → Preference → External Tools窗口，将JDK，SDK，NDK按如下路径设置，然后重启Editor
+* 如果定制版Unity不是从从Unity Hub安装的，请使用Hub下载官方版本的unity 2019.4.29f1c2并勾选SDK、NDK，完成后请打开定制版Unity 的 Edit → Preference → External Tools窗口，将JDK，SDK，NDK按如下路径设置，然后重启Editor
 
 ![](Ig_doc_pic/sdk.png)
 
-* 如果打包过程出现异常，请打开PackageManger，重新安装步骤2中的package以确保package版本最新；
+* 如果打包过程出现异常，请打开PackageManger，删除报错的package， 重新安装步骤2中的package以确保package版本最新；
 
 * 如果遇到游戏启动后一直黑屏/花屏，并且游戏开启了strip engine code选项，请确认步骤2中built-in package Auto Streaming已启用
 
@@ -334,6 +334,10 @@ Texture的placeholder 以及Auto Streaming的配置可复用。
 但做了streaming之后，Asset内的数据不可立即访问，
 例如Mesh.vertices，Texture2D.GetPixels(),Texture2D.GetWidth()，AudioClip.LoadAudioData()
 等接口的调用可能会返回null或者不正确的结果。
+
+8. 使用2019.4.29f1c106版本打开游戏工程后，analytics中报“The name 'RemoteSettings' does not exist in the current context”错误
+* 所有InstantGame小游戏广告和支付等功能均由小游戏平台提供， 因此2019.4.29f1c106移除了安卓平台CrashReporting、PerformanceReporting、UnityAds、UnityAnalytics和UnityConnect的支持。
+打包小游戏前需要从PackageManager中移除Advertisement、Analytics Library、In App Purchasing、Unity User Reporting等报错的package，以及游戏工程中的相关代码。
 
 #  版本历史：
 
