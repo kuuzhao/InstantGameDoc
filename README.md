@@ -43,26 +43,24 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 * 打开Package Manager，勾选 Show preview packages, 搜索“instant Game”, 点击“install”安装package，安装以下package最新版本:
 ![](Ig_doc_pic/add_packages_instantgame.png)
 
-* 切换到Built-in packages，找到AutoStreaming模块，点击右下角的enable按钮进行添加
+* 切换到Built-in packages，找到AutoStreaming模块，点击右下角的enable按钮进行添加。对于新建的工程，AutoStreaming模块已经自动加到工程中，可以跳过该步骤。
  
  ![](Ig_doc_pic/add_module_autostreaming.png)
 
-对于新建的工程，AutoStreaming模块已经自动加到工程中，可以跳过该步骤。
-
  ## 3. 切换平台和选择压缩格式
-打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4 压缩格式。同时确认**取消勾选export project**。
+打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4HC 压缩格式。同时确认**取消勾选export project**。
 
 ![](Ig_doc_pic/buildSetting.png)
 
  ## 4. 打开Instant Game功能并选择小游戏平台
- InstantGame窗口位于Windows → Auto Streaming，该窗口包含了InstantGame的所有功能选项，打包小游戏前的资源streaming设置，以及上传资源到CCD的设置。
+ InstantGame窗口位于Windows → Auto Streaming，该窗口包含了InstantGame的所有功能选项，打包小游戏前的资源streaming设置，以及上传云资源到CCD的设置。
 
 ![](Ig_doc_pic/publish_tab.png)
 
 * **切换到Publish窗口，勾选Use AutoStreaming**，打开Instant Game功能；如果后续需要使用正常的打包流程，取消勾选该选项即可。
 
-* **在Minigame Platform下拉列表中选择小游戏平台**, 切换小游戏平台过程中将自动为工程设置推荐的PlayerSettings设置(Scripting Backend,Target Architectures，Strip Engine Code)。
-如果手动修改了推荐的PlayerSettings设置，可以通过点击 "Apply recommended PlayerSettings" 重新设置回来。
+* **在Minigame Platform下拉列表中选择小游戏平台**, 切换小游戏平台过程中将自动为工程设置推荐的PlayerSettings设置(Scripting Backend, Target Architectures, Strip Engine Code)。
+如果后续手动修改了PlayerSettings设置，可以通过点击 "Apply recommended PlayerSettings" 重新设置回来。
 
 * **(推荐)切换图形API到GLES 3**, 在Project Settings → Player → Other Settings中取消Auto Graphics API,仅保留GLES 3，从而减少首包和下载的云资源。
 该步骤可能花费较长的时间，请耐心等待。
@@ -78,7 +76,7 @@ Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作�
 
 | 字段  | 描述 |
 | ------------- | ------------- |
-| InstantGame AppId  | CCD InstantGame项目标识字符串；该字符串作为上传CCD文件的钥匙，请注意保密  |
+| InstantGame AppId  | CCD InstantGame项目标识字符串；该字符串作为上传CCD文件的钥匙，请注意保密;  |
 | Bucket  | 文件桶，建议游戏的资源存放在一个bucket中，从而利用CCD资源版本管理和增量上传的优势提高开发效率； |
 | Badge   | 每次上传文件到CCD，都会创建一个云服务器文件的release，Badge作为release的别名，用于固定资源下载的url；**每次发布小游戏新版本时，必须创建一个新的Badge使用**。  |
 
@@ -118,10 +116,10 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 | Sync Texture | 搜索 BuildSettings 中的 Scenes 引用到的所有 Texture 资源；|
 | Force Rebuild |  勾选后点击Generate AssetBundles，将强制重新生成 texture 的 AssetBundles； |
 | Generate AssetBundles | 为所有勾选的 texture 生成 AB，每张贴图一个 AB；|
-| Generate Placeholders | 为所有勾选的 texture 生成一张低分辨率的替用贴图；对于少数不支持低分辨率贴图的情况（如使用spine插件的图集，在代码中读取size的贴图，RawImage上使用的贴图），在勾选Placeholder 之外需要勾选BlurPlaceholder, 从而生成一张同样大小但信息量更少的图片； |
+| Generate Placeholders | 为所有勾选的 texture 生成一张低分辨率的替用贴图；对于少数不支持低分辨率贴图的情况（如使用spine旧版插件的图集，在代码中读取size的贴图，RawImage上使用的贴图），在勾选Placeholder 之外需要勾选BlurPlaceholder, 从而生成一张同样大小但信息量更少的图片； |
 | ConvertLegacySpritePacker | 将旧式的Sprite packer 图集转换成SpriteAtlas，从而获得streaming支持；**该功能会清理所有sprite上的packing Tag，使用前请对工程做好备份**。|
 
-**首次打包操作流程**：点击 convertLegacySpritePacker(可选) → Sync Texture → Ctrl + A 选择所有图片，勾选 Placeholder → 点击 Generate AssetBundles → 点击表头按生成的 AB 大小排序 取消勾选 AB 过小的图片（例如小 5KB，可使用Shift多选）→ 点击 Generate AssetBundles 清理不需要的AB → 点击 Generate Placeholders。
+**首次打包操作流程**：点击 convertLegacySpritePacker(可选) → Sync Texture → Ctrl + A 选择所有图片，勾选 Placeholder → 点击 Generate AssetBundles → 点击表头按生成的AB大小排序，取消勾选 AB 过小的图片（例如小 5KB，可按住Shift多选）→ 点击 Generate AssetBundles 清理不需要的AB → 点击 Generate Placeholders。
 
 **更新操作流程**： Sync Texture → 调整Placeholder的勾选 → 勾选Force Rebuild → 点击 Generate AssetBundles 清理不需要的AB →  点击 Generate Placeholders。
 
@@ -141,7 +139,7 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 | ------------- | ------------- |
 | Sync Scenes | 获取 build setting 中的 Scene，并在下方显示； |
 | Force Rebuild | 勾选后，将强制重新生成 Scene 的 AssetBundles； |
-| Generate AssetBundle | 生成场景的 AB，以及场景共享AB; |
+| Generate AssetBundle | 生成场景的 AB，以及场景共享资源AB; |
 | Sync SharedAssets | 搜索勾选了streaming的场景中的共同引用到的资源。 |
 
 ![](Ig_doc_pic/shared_scene_assets_ui.png)
@@ -155,7 +153,7 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 **使用流程**： Sync Scenes → 选择需要streaming的场景 → Sync SharedAssets → 勾选SharedAssets资源 → 如果已经生成过场景AB，勾选Force Rebuild → Generate AssetBundles。
 
-Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置，请务必先执行前面的操作。
+**Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置，请务必先执行前面的操作。**
 
  ## 10. 游戏AB/Addressable重打包（可选）
 * 游戏工程使用了Asset bundle ，需要在配置好Texture/Audio/Mesh/Animation Streaming后，重新build Asset bundle（删除已有AB, 再打包）。
@@ -173,31 +171,31 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 
 ![](Ig_doc_pic/rebuild_AB.png)
 
+**游戏AB/Addressable打包依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置，请务必先执行前面的操作。**
  ## 11. 打包小游戏并部署到CCD云服务器
-* 打开Auto Streaming -> Publish窗口，选择使用的bucket和badge；
-如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**，不建议使用latest badge。
+* 打开Auto Streaming -> Publish窗口，在左侧选择使用的bucket和badge；
+如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**，另外不建议使用latest badge。
 
 ![](Ig_doc_pic/publish_tab.png)
 
-* 根据右下角的警告提示，修改游戏工程设置。
+* 根据右侧的Instant Game Build Warnings提示，修改游戏工程设置。
 
-* 确认选中的Minigame Platform。
+* 确认选中的Minigame Platform 为目标小游戏平台。
 
 * 上述操作完成后，点击Build Instant Game按钮即可进行小游戏打包。
 
-* (可选)如果有自定义的文件(如游戏边玩边下的AB)需要上传到CCD，手动拷贝文件到工程目录下的CustomCloudAssets文件夹内(CustomCloudAssets文件夹具体使用请参考补充说明部分)。
+* 打包完成后，点击右侧的Refresh按钮，可查看的Instant Game打包结果统计信息。如果首包过大，请根据Instant Game Build Warnings的提示进行优化。
+
+* (可选)如果有自定义的文件(如游戏边玩边下的AB)需要上传到CCD，请手动拷贝文件到工程目录下的CustomCloudAssets文件夹内(CustomCloudAssets文件夹具体使用请参考补充说明部分)。
 ![](Ig_doc_pic/custom_cloud_assets_folder.png)
 
-* 打包完成后，点击Upload Built Instant Game 开始上传并部署小游戏到CCD云服务器；上传期间如果出现网络问题上传失败，重新点击上传按钮即可，上传工作会从上一次失败的位置继续执行。
+* 自定义的CCD文件准备好后，点击Upload Built Instant Game 开始上传并部署小游戏到CCD云服务器；上传期间如果出现网络问题上传失败，重新点击上传按钮即可，上传工作会从上一次失败的位置继续执行。
 
 * **打包和上传中间，请不要改动CCD配置，否则游戏运行时将找不到需要的资源。**
 
 * 完成部署后，使用MegaApp扫描下方的二维码即可运行小游戏，该二维码仅供MegaApp测试使用。
 
-* 如果遇到打包失败的问题，请先参照**补充说明**部分, 确认JDK/SDK/NDK配置正确。
-
-* 打包完成后，点击下图中的Refresh按钮，即可查看的Instant Game打包结果统计信息。
-
+* 如果遇到打包失败的问题，请先参照**补充说明**部分, 确认JDK/SDK/NDK配置正确。如果游戏从MegaApp中启动后，读取AB文件失败，请点击 Clear Cloud Assets按钮清理所有云资源文件，然后重新打包。
 
 ![](Ig_doc_pic/ig_stats.png)
 
@@ -266,6 +264,7 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 
 * 如代码中有自定义打包脚本，可通过调用InstantGame提供的BuildPlayer接口打包InstantGame。
  ![](Ig_doc_pic/build_instantgame.png)
+
 ### 建议：
 * 推荐所有Texture都使用ETC或者ETC2压缩格式，从而大幅降低游戏内存占用并小幅减小场景AB和首包的size。
 
@@ -280,6 +279,8 @@ Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置�
 * 如果定制版Unity不是从从Unity Hub安装的，请使用Hub下载官方版本的unity 2019.4.29f1c2并勾选SDK、NDK，完成后请打开定制版Unity 的 Edit → Preference → External Tools窗口，将JDK，SDK，NDK按如下路径设置，然后重启Editor。
 
 ![](Ig_doc_pic/sdk.png)
+
+* 使用了**旧版spine插件**的工程，所有spine图集必须勾选BlurPlaceholder，否则会出现显示错误; 因此推荐将spine插件升级到3.7.xx(2019-05-06)之后的版本。
 
 * 如果打包过程出现异常，请打开PackageManger，删除报错的package， 重新安装步骤2中的package以确保package版本最新。
 
