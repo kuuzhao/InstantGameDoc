@@ -40,12 +40,8 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 
  ## 2. 添加InstantGame需要Package
 
-* 打开Package Manager，勾选 Show preview packages, 搜索“instant Game”, 点击“install”安装package，安装以下package最新版本:
+* 打开Package Manager，选择Unity Registry并勾选Show preview packages, 然后搜索“instant Game”, 点击“install”安装以下package最新版本:
 ![](Ig_doc_pic/add_packages_instantgame.png)
-
-* 切换到Built-in packages，找到AutoStreaming模块，点击右下角的enable按钮进行添加。对于新建的工程，AutoStreaming模块已经自动加到工程中，可以跳过该步骤。
- 
- ![](Ig_doc_pic/add_module_autostreaming.png)
 
  ## 3. 切换平台和选择压缩格式
 打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4HC 压缩格式。同时确认**取消勾选export project**。
@@ -67,7 +63,7 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 
 ![](Ig_doc_pic/gles3.png)
 
-* **(可选)勾选Use Font Streaming**，开启Font资源的Streaming；实验性功能。
+* **(可选)勾选Use Font Streaming**，开启字体资源的Streaming；实验性功能。
 
 ![](Ig_doc_pic/experimental_features.png)
 
@@ -121,7 +117,7 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 **首次打包操作流程**：点击 convertLegacySpritePacker(可选) → Sync Texture → Ctrl + A 选择所有图片，勾选 Placeholder → 点击 Generate AssetBundles → 点击表头按生成的AB大小排序，取消勾选 AB 过小的图片（例如小 5KB，可按住Shift多选）→ 点击 Generate AssetBundles 清理不需要的AB → 点击 Generate Placeholders。
 
-**更新操作流程**： Sync Texture → 调整Placeholder的勾选 → 勾选Force Rebuild → 点击 Generate AssetBundles 清理不需要的AB →  点击 Generate Placeholders。
+**更新操作流程**： Sync Texture → 调整Placeholder的勾选 → 勾选Force Rebuild → 点击 Generate AssetBundles重新生成AB →  点击 Generate Placeholders。
 
 ![](Ig_doc_pic/texture2.png)
 
@@ -202,7 +198,7 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
  ## 12. 小游戏运行与测试
 * MegaApp app中仅支持游戏自身的功能测试，**广告支付等功能需要在平台方发布测试版**后使用。已接入字节小游戏SDK的游戏，请更新字节SDK到最新版本，旧版SDK需打包**Development版本**才可以在MegaApp app运行。
 
-* 从[Unity Instant Game](https://unity.cn/instantgame)网页下载c106版本下的MegaApp app并安装。该App中包含了一个BoatAttack 转成的Instant Game示例，同时也是Unity Instant Game的测试工具。
+* 从[Unity Instant Game](https://unity.cn/instantgame)网页下载c106版本下的MegaApp app并安装。该App中包含了一个BoatAttack转成的Instant Game示例，同时也是Unity Instant Game的测试工具。
 
 ![](Ig_doc_pic/megaapp.png)
 
@@ -232,7 +228,7 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 ![](Ig_doc_pic/shouq_json.png)
 
 ## 14. 小游戏提审及发布和版本锁定
-* 自测完成后，在小游戏平台将当前测试版本提交审核，测试版本转为提审版本, 小游戏平台方审核通过后即可发布，提审版本转为发布版本。
+* 自测完成后，在小游戏平台将当前测试版本提交审核，测试版本转为提审版本； 小游戏平台方审核通过后即可发布，提审版本转为发布版本。
 * **小游戏提审后，当前使用的CCD badge需要锁定，避免后续打包覆盖提审或者上线版本**。
     通过点击 Badge to Use最右边的lock按钮可以手动将当前选定的badge锁住，避免被覆盖。
 ![](Ig_doc_pic/lock.png)
@@ -245,13 +241,13 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 ## 补充说明
 ### 功能：
-* Instant Game不支持对使用Packing Tag的Sprite 的Streaming，仅支持SpriteAtlas的Streaming；但可以通过InstantGame提供的功能将使用Packing Tag的Sprite转为支持Streaming的SpriteAtlas。当项目的Play Settings/Editor/Sprite Packer/Mode 为Enable For Build (Legacy Sprite Packer)或Always Enable(Legacy Sprite Packer)时，Instant Game界面才会显示ConvertLegacySpritePacker按钮。
+* Instant Game不支持对使用Packing Tag的Sprite做Streaming，仅支持SpriteAtlas的Streaming；但可以通过InstantGame提供的功能将使用Packing Tag的Sprite转为支持Streaming的SpriteAtlas。当项目的Play Settings/Editor/Sprite Packer/Mode 为Enable For Build (Legacy Sprite Packer)或Always Enable(Legacy Sprite Packer)时，Instant Game界面才会显示ConvertLegacySpritePacker按钮。
 
 * Texture2D 对应的Placeholder文件默认Max Size 为32，特殊情况下，可通过Texture 的Insepector中适当调高Max Size的值（一般不高于256），从而改善首次进入游戏的体验。Placeholder 存放在Assets/AutoStreamingData/Placeholders 目录下。
 
 * 如果il2cpp游戏首包超过20M，可以尝试开启stripEngineCode，可减少首包约3M左右，但strip后的引擎文件不再共享。
 
-* 非字节平台可选择使用Mono打包
+* 非字节平台可选择使用Mono打包，Instant Game支持64位Mono，并且大多数情况下首包相比il2cpp更小。
 
 * CustomCloudAssets目录下的文件(C106版本后支持子目录)将在点击Auto Streaming → Publish → Upload to CCD时随其他资源文件一起上传到CCD，文件的下载地址为：
  ![](Ig_doc_pic/custom_cloud_assets_url.png)
@@ -280,7 +276,7 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 ![](Ig_doc_pic/sdk.png)
 
-* 使用了**旧版spine插件**的工程，所有spine图集必须勾选BlurPlaceholder，否则会出现显示错误; 因此推荐将spine插件升级到3.7.xx(2019-05-06)之后的版本。
+* 使用了**旧版spine插件**的工程，所有spine图集必须勾选BlurPlaceholder，否则会出现显示错误; 因此推荐**将spine插件升级到3.7.xx(2019-05-06)之后的版本**。
 
 * 如果打包过程出现异常，请打开PackageManger，删除报错的package， 重新安装步骤2中的package以确保package版本最新。
 
@@ -300,12 +296,12 @@ Texture的placeholder 以及Auto Streaming的配置可复用。
 
 ## prefab与Scene文件改动：
 * 在Scene Streaming页面，点击 Sync Scenes → 勾选force rebuild → Generate AssetBundles；
-* 如果项目原本有打包AB或者使用Addressables, 重新build AB；
+* 如果项目原本有打包AB或者使用Addressables, 则需要重新build AB；
 * 其余操作与**仅代码改动**时一致。
 
 ## texture/audio/mesh资源改动:
-* Texture 资源变动： 重新 sync， 如果变动的texture原本勾选了streaming，或者有新的texture加入streaming， 勾选force rebuild,  重新打包AB,  并重新生成placeholder；
-* audio/mesh资源变动: 重新 sync即可；
+* Texture 资源变动： 重新sync，调整需要Streamingd资源 → 勾选force rebuild → 点击Generate AssetBundles重新打包AB → 点击Generate placeholder；
+* audio/mesh资源变动: 重新sync，调整需要Streamingd资源；
 * 其余操作与**prefab与Scene文件改动**时一致。
 
 # FAQ:
@@ -313,25 +309,25 @@ Texture的placeholder 以及Auto Streaming的配置可复用。
 * 当Build settings里面的Scene列表为空时，打包InstantGame不会自动打包当前打开的场景，请确认项目的build settings-> Scene列表是否为空。
 
 2. 游戏启动后，提示下载失败或者网络不给力。
-* 游戏用到了某个Streaming的资源，但CCD服务器上没有，会提示网络不给力。可能发生的原因：重新打包了游戏apk或InstantGame，忘了点上传; 打包和上传中间，要改动了CCD配置。
+* 游戏用到了某个Streaming的资源，但CCD服务器上没有，则会提示网络不给力。可能发生的原因：重新打包了游戏apk或InstantGame，忘了点上传; 打包和上传中间，改动了CCD配置，导致上传的位置和下载的位置不一致。
 
 3. 游戏上传到CCD后，用MegaApp扫描二维码，提示 "This game does not support abi "armeabi-v7a/arm64-v8a""
-* 请确认unity项目的PlayerSettings ->Player-> other Settings 中同时勾选了32和64位ABI。
+* 请确认unity项目的PlayerSettings ->Player-> other Settings中的Target Architectures 同时勾选了ARMv7和ARM64。
 ![](Ig_doc_pic/abi.png)
 4. 打包好的游戏，上传到抖音后，部分或全部手机启动闪退，无法进入游戏。
-* 部分手机闪退请确认游戏是否同时打包32位和64位，所有手机都无法进入，请检查上传抖音的json文件和CCD当前的文件版本是否一致（MD5相同），是否被覆盖。
+* 部分手机闪退请确认游戏是否同时打包32位和64位，所有手机都无法进入，请检查上传抖音的json文件和CCD当前的文件版本是否一致（MD5相同），当前使用的CCD Badge是否被覆盖。
 
-5. URP游戏上传json文件到字节小游戏提示“发布失败： 设置错误：场景中的Canvas Render Mode 不能为Overlay”， 录屏缺少后效和UI
-* 请升级字节小游戏Stark SDK到5.6.0之后的版本，Unity Ig Tools升级到最新版本，升级后可能依旧会显示该提示
-(上传json文件时可暂时取消勾选BuildSettings中的所有场景绕过，后续更新将修复)，但录屏异常问题已修复。
+5. URP游戏上传json文件到字节小游戏提示“发布失败： 设置错误：场景中的Canvas Render Mode 不能为Overlay”，录屏缺少后效和UI。
+* 请将字节小游戏Stark SDK升级到5.6.0之后的版本，Unity Ig Tools升级到最新版本，升级后可能依旧会显示该提示
+(上传json文件时可临时取消勾选BuildSettings中的所有场景绕过，后续更新将修复)，但录屏异常问题已修复。
 
-6. 如果我什么都没有改变，只是重复打了包，还需要上传吗?
+6. 如果我什么都没有改变，只是重新打了包，还需要上传吗?
 * 重新打包的时候，会重新生成首包文件，每次生成的首包MD5都不一样，小游戏平台在启动游戏前会校验首包文件的MD5，所以需要重新上传。
 
 7. 游戏内有从AB和Resources文件夹加载资源的逻辑，做了streaming后该如何加载?
-* 对于Texture2D和SpriteAtlas，AutoStreaming使用了一个小分辨率的资源替换了原资源；
-对于AudioClip、Mesh和AnimationClip，AutoStreaming仅抽取了Asset中的重度数据，Asset对象依旧存在，
-因此可以按照原来的逻辑加载AB和Resources内的资源。
+* 对于Texture2D和SpriteAtlas资源，AutoStreaming使用了一个小分辨率的资源替换了原资源；
+对于AudioClip、Mesh和AnimationClip资源，AutoStreaming仅抽取了其中的重度数据，Asset对象依旧存在，
+因此可以按照原来的逻辑加载AB和Resources内的Asset。
 但做了streaming之后，Asset内的数据不可立即访问，
 例如Mesh.vertices，Texture2D.GetPixels(),Texture2D.GetWidth()，AudioClip.LoadAudioData()
 等接口的调用可能会返回null或者不正确的结果。
