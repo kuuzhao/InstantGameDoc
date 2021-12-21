@@ -252,8 +252,6 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 * CustomCloudAssets目录下的文件(C106版本后支持子目录)将在点击Auto Streaming → Publish → Upload to CCD时随其他资源文件一起上传到CCD，文件的下载地址为：
  ![](Ig_doc_pic/custom_cloud_assets_url.png)
 使用AutoStreaming.CustomCloudAssetsRoot字段，需要启用步骤2中built-in package Auto Streaming。
-另外在Edit → Preferences → External页面点击 Regenerate project files重新生成 .csproj文件，可以避免在VS中因dll引用丢失报错。
- ![](Ig_doc_pic/regenerate_csproj_files.png)
 如因其他原因无法使用AutoStreaming.CustomCloudAssetsRoot字段，可以选择手动拼接URL，拼接规则为
 **{Publish页面可复制的Auto Streaming Path} + "/CUS%252F" + {自定义文件名}**，
 文件名内所有的“/”需替换为“%252F”。
@@ -347,6 +345,7 @@ Texture的placeholder 以及Auto Streaming的配置可复用。
 * 新增cubemap的streaming支持，重新点击Sync Textures可找出所有引用的cubemap
 * 新增blendshape类型Mesh的streaming支持，重新点击Sync Meshes可找出所有引用的cubemap
 * 新增AutoStreaming.CustomCloudAssetsRoot字段提供Custom资源的下载根路径
+* 新增Instant Game打包结果统计信息和提示信息
 * instantgame package合为一个，并在Package Manager中上线
 
 ## 2019.4.9f1c105  --  2021/07/29
