@@ -145,6 +145,8 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 * 被大多数场景引用到的资源(References中包含场景序号较多的资源)
 * 本身较大的shader等资源
 
+一个FBX文件中可能包含模型材质等诸多资源，而场景引用的仅是其中的一个或少数几个，因此**不推荐勾选FBX文件**，避免共享AB过大。
+
 ![](Ig_doc_pic/shared_scene_assets_ab.png)
 
 **使用流程**： Sync Scenes → 选择需要streaming的场景 → Sync SharedAssets → 勾选SharedAssets资源 → 如果已经生成过场景AB，勾选Force Rebuild → Generate AssetBundles。
@@ -218,6 +220,8 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 ![](Ig_doc_pic/publis_to_bytedance.png)
 ![](Ig_doc_pic/bytedance_json.png)
 
+* 游戏存档请存放在[字节小游戏目录说明与缓存策略](https://bytedance.feishu.cn/docx/doxcndqvjqK0FlitAnvamW2A0Pg)建议的位置，否则会存在存档丢失的风险。
+
 ### 快手小游戏
 * 游戏上传完成后，通过[快手小游戏发布流程](https://docs.qingque.cn/d/home/eZQCxPZeFJeasEKOxlcGm0W8D), 将游戏工程根目录下的IGOutput/ig_kwai.json提交测试，完成后使用最新版快手 App 扫描生成的二维码即可自测试。
 ![](Ig_doc_pic/publish_to_kwai.png)
@@ -265,6 +269,8 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 * 推荐使用Strip后的字体文件，即仅包含会使用到的字符的字体文件（如中文常用3000/6500字+英文字符+中英文标点），从而减小场景AB和首包的size。
 
 * 打包游戏前建议将Managed Stripping Level开到游戏支持的最高级别，从而减小首包大小。
+
+* 小游戏存档建议保存在服务器，避免丢失。本地存档请优先保存在小游戏平台推荐的位置，也通过Unity PlayerPrefs保存。直接使用本地文件保存的存档存在被清理的风险。
 
 ### 问题：
 * 如果操作失误，上传文件到CCD时覆盖了已有版本的badge，请前往CCD网站将Badge标签设置回来。
@@ -333,6 +339,12 @@ Texture的placeholder 以及Auto Streaming的配置可复用。
 8. 在[InstantGame](https://unity.cn/instantgame)网页点击"从Hub下载"，跳转到了Unity Hub，但没有弹出下载页面。
 * 仅中国版Unity Hub支持从Hub下载InstantGame定制版。
 
+9.上传文件到CCD时，报CoseServerException:(statusCode = 403, statusMessage = Forbidden, errorCode = AccessDenied, errorMessage = "....")错误。
+* 请先关闭Unity Editor后重试，如果该方法无效，请根据errorMessage的值参考[腾讯云故障处理](https://cloud.tencent.com/document/product/436/54303)文档查找具体原因。
+
+10.部分Android 10以上的手机运行小游戏时卡住或闪退，错误日志中有“use memory address more than 16GB”的提示。
+* 2019.4.29f1c106之后的版本以修复该问题，推荐使用最新发布的InstantGame Editor。
+
 #  版本历史：
 
 ## 2019.4.29f1c106  --  2021/12/14
@@ -343,7 +355,7 @@ Texture的placeholder 以及Auto Streaming的配置可复用。
 * 新增scene streaming可选功能
 * 新增scene streaming中的shared scene asset功能，用于减少scene AB的资源冗余
 * 新增cubemap的streaming支持，重新点击Sync Textures可找出所有引用的cubemap
-* 新增blendshape类型Mesh的streaming支持，重新点击Sync Meshes可找出所有引用的cubemap
+* 新增blendshape类型Mesh的streaming支持，重新点击Sync Meshes可找出所有引用的blendshape
 * 新增AutoStreaming.CustomCloudAssetsRoot字段提供Custom资源的下载根路径
 * 新增Instant Game打包结果统计信息和提示信息
 * instantgame package合为一个，并在Package Manager中上线
