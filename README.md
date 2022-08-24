@@ -43,7 +43,7 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
  ## 2. 添加InstantGame需要Package
 
 * 打开Package Manager，选择Unity Registry并勾选Show preview packages, 然后搜索“instant Game”, 点击“install”安装以下package最新版本:
-![](Ig_doc_pic/cfg _and_publish.png)
+![](Ig_doc_pic/add_packages_instantgame.png)
 
  ## 3. 切换平台和选择压缩格式
 打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4HC 压缩格式。同时确认**取消勾选export project**。
