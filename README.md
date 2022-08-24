@@ -8,7 +8,9 @@ Unity Instant Game是Unity最新的小游戏解决方案，可以轻松将高品
 ## [手Q小游戏 Unity Instant Game 接入说明](https://q.qq.com/wiki/)
 
 # 安装定制版Unity Editor
-Unity Instant Game定制版引擎现已登陆Unity官方网站, 前往[https://unity.cn/instantgame](https://unity.cn/instantgame "Unity Instant Game")页面即可下载最新版本。如您未安装Unity Hub请按照网页提示或者前往[Unity Hub](https://unity.cn/releases )页面安装，然后从Intant Game页面点击从Hub下载，在弹出的Hub页面中，确认勾选JDK、SDK、NDK，然后点击Install按钮即可。
+Unity Instant Game定制版引擎现已登陆Unity官方网站, 前往[https://unity.cn/instantgame](https://unity.cn/instantgame "Unity Instant Game")页面即可下载最新版本。
+如您未安装Unity Hub请按照网页提示或者前往[Unity Hub](https://unity.cn/releases )页面安装，然后从Intant Game页面点击从Hub下载，在弹出的Hub页面中，
+确认勾选Android Build Support、Android SDK & NDK Tools以及OpenJDK，然后点击Install按钮即可。
 
 ![](Ig_doc_pic/hub.png)
 
@@ -41,7 +43,7 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
  ## 2. 添加InstantGame需要Package
 
 * 打开Package Manager，选择Unity Registry并勾选Show preview packages, 然后搜索“instant Game”, 点击“install”安装以下package最新版本:
-![](Ig_doc_pic/add_packages_instantgame.png)
+![](Ig_doc_pic/cfg _and_publish.png)
 
  ## 3. 切换平台和选择压缩格式
 打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4HC 压缩格式。同时确认**取消勾选export project**。
@@ -51,7 +53,7 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
  ## 4. 打开Instant Game功能并选择小游戏平台
  InstantGame窗口位于Windows → Auto Streaming，该窗口包含了InstantGame的所有功能选项，打包小游戏前的资源streaming设置，以及上传云资源到CCD的设置。
 
-![](Ig_doc_pic/publish_and_config.png)
+![](Ig_doc_pic/cfg_and_publish.png)
 
 * **切换到Cfg & Publish窗口，勾选Use AutoStreaming**，打开Instant Game功能；如果后续需要使用正常的打包流程，取消勾选该选项即可。
 
@@ -80,15 +82,15 @@ Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作�
 
 ![](Ig_doc_pic/create_ccd_project.png)
 
-* 创建完成后，网页将自动跳转到Endless_Runner项目的Overview页面，点击Content Delivery → Instant Game App ID，点击右上角Open按钮，填写信息后即可获得Instant Game App ID。
-
-* 复制该字符串并填写到Cfg & Publish窗口的InstantGame AppId输入框中 ，完成后单击左栏Refresh按钮拉取Endless_Runner的Bucket/Badge 信息。
+* 创建完成后，网页将自动跳转到Endless_Runner项目的Overview页面，点击前往Content Delivery → Instant Game App ID页面，然后点击右上角Open按钮，填写信息后即可获得Instant Game App ID。
 
 ![](Ig_doc_pic/open_instantgame.png)
 
+* 复制该字符串并填写到Cfg & Publish窗口的InstantGame AppId输入框中 ，完成后单击左栏Refresh按钮拉取Endless_Runner的Bucket/Badge 信息。
+
 * 选择或者创建新的Bucket/Badge 并使用。Endless_Runner项目是一个新建的CCD项目，当前并不存在bucket和badge，因此我们新建一个名为Endless_Runner的bucket，并在该bucket下新建一个名为v1的badge。
 
-![](Ig_doc_pic/publish_and_config.png)
+![](Ig_doc_pic/cfg_and_publish.png)
 
 
 CCD会为每一个Bucket自动生成一个名为latest的badge，每次上传文件，该badge位置都会自动更新，始终指向最新的资源版本，因此**不要在提交给小游戏平台的版本中使用latest**，以免后续资源更新时影响已发布版本。
@@ -105,11 +107,11 @@ CCD会为每一个Bucket自动生成一个名为latest的badge，每次上传文
 Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因此跳过该步骤。
 
  ## 7. 设置模型导入默认材质（可选）
- 如果游戏的AssetBundle或者Resources文件夹中有FBX等模型资源文件，建议执行该步骤。
+ 如果游戏的AssetBundle中有FBX等模型资源文件，建议执行该步骤。
 
  ![](Ig_doc_pic/model_import_default_mat.png)
 
- 在Assets目录下选择或新建默认材质ModelImportDefaultMat，并设置到ProjectSettings/Graphics/ 的Model Import Default Material 属性，
+ 在Assets目录下选择或新建一个默认材质，如ModelImportDefaultMat，并设置到ProjectSettings/Graphics/ 的Model Import Default Material 属性，
  然后点击IgTool/Reimport Models with DefaultImportMaterial。 
  该步骤将替换所有模型文件的默认材质，避免下一步骤打包AB时，产生大量Standard shader重复。
 
@@ -135,7 +137,7 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 ![](Ig_doc_pic/texture2.png)
 
- 注: 如果游戏中使用了图集SpriteAtlas，并且图集打包到了Addressable中，请在上述操作完成后，额外点击按钮 "Use SpriteAtlas Placeholder in Addressable"来替换其中的图集为小图。
+ 注: 如果游戏中使用了图集SpriteAtlas，并且图集打包到了Addressables中，请在上述操作完成后，额外点击按钮 "Use SpriteAtlas Placeholder in Addressable"来替换其中的图集为小图。
 
  ## 9. 配置Audio/Mesh/Animation Streaming
 配置游戏内的Audio/Mesh/Animation资源是否使用streaming功能。Instant Game支持将本地较大的音频和 mesh等资源内的数据从游戏首包/AB 中抽离出来，部署CCD服务器上。当游戏首次使用到该Audio/Mesh/Animation资源时，将触发引擎后台线程下载资源数据，完成后自动加载使用。
@@ -169,10 +171,10 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 **Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置，请务必先执行前面的操作。**
 
- ## 11. 游戏AB/Addressable重打包（可选）
+ ## 11. 游戏AB/Addressables重打包（可选）
 * 游戏工程使用了Asset bundle ，需要在配置好Texture/Audio/Mesh/Animation Streaming后，重新build Asset bundle（删除已有AB, 再打包）。
 
-* 游戏工程使用了 addressable，同样需要在配置好Texture/Audio/Mesh/Animation Streaming后重新打包。
+* 游戏工程使用了 Addressables，同样需要在配置好Texture/Audio/Mesh/Animation Streaming后重新打包。
 
 
 在Endless Runner游戏工程中，使用了Asset bundle进行资源打包，因此需要完全重新打包，步骤如下：
@@ -185,9 +187,22 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 ![](Ig_doc_pic/rebuild_AB.png)
 
-**游戏AB/Addressable打包依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置，请务必先执行前面的操作。**
+**游戏AB/Addressables打包依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置，请务必先执行前面的操作。**
 
-## 12. 设置游戏最大缓存size
+
+## 12. 拷贝AB到CCD上传目录（可选）
+如果游戏的AB文件在开启了AutoStreaming后依旧比较大，可以选择将AB文件拷贝到CustomCloudAssets目录下的CloudAB文件夹，随后一起上传到CCD上。
+CustomCloudAssets/CloudAB文件夹下的AssetBundle支持直接使用AssetBundle.LoadFromFileAsync(abNameOrPath)进行加载，
+因此原本使用本地路径异步加载AB的代码逻辑无需改动。
+
+![](Ig_doc_pic/cloudAB_folder.png)
+
+CustomCloudAssets目录同时也支持Addressables，可以将Addressables打包出来的文件直接放到CustomCloudAssets或其子目录下，并将Addressables的RemoteLoadPath设置为：
+
+**{Cfg & Publish页面可复制的Auto Streaming Path} + "/CUS/" + {自定义子目录}**。
+
+
+## 13. 设置游戏最大缓存size
 字节小游戏平台会设置游戏最大缓存限制，默认为200MB，超出后，会自动删除已有文件。如果在游戏运行时误删了正在使用的AB文件，则有可能导致程序崩溃。
 为避免误删情况的出现，可以在打包时设置一个比小游戏平台小一些的缓存限制，超出限制时，由Unity引擎负责安全地清理不需要的文件。
 
@@ -195,19 +210,20 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 ![](Ig_doc_pic/cache_size.png)
 
-* 建议设置的值可通过以下方式计算：
-MaxCacheSize = （Scene AB大小 + Texture 大小 + custom AB大小）/ Cloud Assets总量 \* 平台缓存限制
+* 建议设置为稍大于以下方式计算的值：
+ 
+（Scene AB大小 + Texture 大小 + custom AB大小）/ Cloud Assets总量 \* 平台缓存限制
 
 **注意：** 
-* 云资源远小于200MB的游戏，可以使用默认值0，避免重复下载
+* 云资源远小于200MB的游戏，可以不设置该值，避免重复下载
 * 当该值为0时，Unity引擎不对AB缓存做任何限制； 
 * 过小的值可能导致游戏启动时提示存储不足；
-* 如果是重度游戏，且云资源非常多，通过设置MaxCacheSize依旧无法正常进行游戏，请联系小游戏平台放，将缓存限制设置为更大的值。
+* 如果是重度游戏，且云资源非常多，通过设置MaxCacheSize依旧无法正常进行游戏，请联系小游戏平台方，将缓存限制设置为更大的值。
 
 
- ## 13. 打包小游戏并部署到CCD云服务器
+ ## 14. 打包小游戏并部署到CCD云服务器
 * 打开Auto Streaming -> Cfg & Publish页面，在左侧选择使用的bucket和badge；
-如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**，另外不建议使用latest badge。
+如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**，另外**不建议使用latest badge**。
 
 ![](Ig_doc_pic/publish_tab.png)
 
@@ -228,11 +244,11 @@ MaxCacheSize = （Scene AB大小 + Texture 大小 + custom AB大小）/ Cloud As
 
 * 完成部署后，使用MegaApp扫描下方的二维码即可运行小游戏，该二维码仅供MegaApp测试使用。
 
-* 如果遇到打包失败的问题，请先参照**补充说明**部分, 确认JDK/SDK/NDK配置正确。如果游戏从MegaApp中启动后，读取AB文件失败，可以尝试Clear Cloud Assets按钮清理所有云资源文件，然后重新打包。
+* 如果遇到打包失败的问题，请先参照**补充说明**部分, 确认JDK/SDK/NDK配置正确。如果游戏从MegaApp中启动后，获取AutoStreaming云资源文件失败，可以尝试Clear Cloud Assets按钮清理所有云资源文件，然后重新打包。
 
 ![](Ig_doc_pic/ig_stats.png)
 
- ## 14. 小游戏运行与测试
+ ## 15. 小游戏运行与测试
 * MegaApp app中仅支持游戏自身的功能测试，**广告支付等功能需要在平台方发布测试版**后使用。已接入字节小游戏SDK的游戏，请更新字节SDK到最新版本，旧版SDK需打包**Development版本**才可以在MegaApp app运行。
 
 * 从[Unity Instant Game](https://unity.cn/instantgame)网页下载c106版本下的MegaApp app并安装。该App中包含了一个BoatAttack转成的Instant Game示例，同时也是Unity Instant Game的测试工具。
@@ -243,7 +259,7 @@ MaxCacheSize = （Scene AB大小 + Texture 大小 + custom AB大小）/ Cloud As
 
 <img src="Ig_doc_pic/MegaAppSample.png" width="270"> <img src="Ig_doc_pic/running.png" width="270">
 
-## 15. 提交小游戏平台并测试
+## 16. 提交小游戏平台并测试
 
 * **小游戏平台上的提审版本和发布版本都由测试版本转化而来，请不要在提交小游戏平台时使用CCD 的 latest Badge。**
 ### 字节小游戏
@@ -266,7 +282,7 @@ MaxCacheSize = （Scene AB大小 + Texture 大小 + custom AB大小）/ Cloud As
 ![](Ig_doc_pic/publish_to_shouq.png)
 ![](Ig_doc_pic/shouq_json.png)
 
-## 15. 小游戏提审及发布和版本锁定
+## 17. 小游戏提审及发布和版本锁定
 * 自测完成后，在小游戏平台将当前测试版本提交审核，测试版本转为提审版本； 小游戏平台方审核通过后即可发布，提审版本转为发布版本。
 * **小游戏提审后，当前使用的CCD badge需要锁定，避免后续打包覆盖提审或者上线版本**。
     通过点击 Badge to Use最右边的lock按钮可以手动将当前选定的badge锁住，避免被覆盖。
@@ -280,7 +296,10 @@ MaxCacheSize = （Scene AB大小 + Texture 大小 + custom AB大小）/ Cloud As
 
 ## 补充说明
 ### 功能：
-* Instant Game不支持对使用Packing Tag的Sprite做Streaming，仅支持SpriteAtlas的Streaming；但可以通过InstantGame提供的功能将使用Packing Tag的Sprite转为支持Streaming的SpriteAtlas。当项目的Play Settings/Editor/Sprite Packer/Mode 为Enable For Build (Legacy Sprite Packer)或Always Enable(Legacy Sprite Packer)时，Instant Game界面才会显示ConvertLegacySpritePacker按钮。
+* Instant Game不支持对使用Packing Tag的Sprite做Streaming，仅支持SpriteAtlas的Streaming；
+但可以通过InstantGame提供的功能将使用Packing Tag的Sprite转为支持Streaming的SpriteAtlas。
+当项目的Play Settings/Editor/Sprite Packer/Mode 为Enable For Build (Legacy Sprite Packer)或Always Enable(Legacy Sprite Packer)时，
+Instant Game界面才会显示ConvertLegacySpritePacker按钮。
 
 * Texture2D 对应的Placeholder文件默认Max Size 为32，特殊情况下，可通过Texture 的Insepector中适当调高Max Size的值（一般不高于256），从而改善首次进入游戏的体验。Placeholder 存放在Assets/AutoStreamingData/Placeholders 目录下。
 
@@ -288,14 +307,21 @@ MaxCacheSize = （Scene AB大小 + Texture 大小 + custom AB大小）/ Cloud As
 
 * 非字节平台可选择使用Mono打包，Instant Game支持64位Mono，并且大多数情况下首包相比il2cpp更小。
 
-* CustomCloudAssets目录下的文件(C106版本后支持子目录)将在点击Auto Streaming → Publish → Upload to CCD时随其他资源文件一起上传到CCD，文件的下载地址为：
+* CustomCloudAssets目录下的文件(C106版本后支持子目录)将在点击Auto Streaming → Cfg & Publish → Upload to CCD时随其他资源文件一起上传到CCD，文件的下载地址为：
  ![](Ig_doc_pic/custom_cloud_assets_url.png)
 使用AutoStreaming.CustomCloudAssetsRoot字段，需要启用步骤2中built-in package Auto Streaming。
 如因其他原因无法使用AutoStreaming.CustomCloudAssetsRoot字段，可以选择手动拼接URL，拼接规则为
-**{Cfg & Publish页面可复制的Auto Streaming Path} + "/" + {自定义文件名}**。
+**{Cfg & Publish页面可复制的Auto Streaming Path} + "/CUS/" + {自定义文件名}**。
 
 * 如代码中有自定义打包脚本，可通过调用InstantGame提供的BuildPlayer接口打包InstantGame。
  ![](Ig_doc_pic/build_instantgame.png)
+
+* AutoStreaming资源文件可通过同目录下，与其同名的*.abas.info或*.abas.manifest文件查看对应的原始资源。
+ ![](Ig_doc_pic/abas_info.png)
+ ![](Ig_doc_pic/abas_manifest.png)
+
+ * AssetBundle依赖分析工具可用于查看游戏AB内的对象，资源和依赖关系，用于帮助优化AB打包时的资源组织结构，从而减少游戏启动时，需要使用到的AB总量。
+  ![](Ig_doc_pic/ab_tool.png)
 
 ### 建议：
 * 推荐所有Texture都使用ETC或者ETC2压缩格式，从而大幅降低游戏内存占用并小幅减小场景AB和首包的size。
@@ -357,7 +383,7 @@ Texture的placeholder 以及Auto Streaming的配置可复用。
     AutoStreaming.MarkRecordBegin(tagName) 也可自定义tagName名称，用于其他适合等待资源加载的位置。注意AutoStreaming.MarkRecordBegin(tagName) 和AutoStreaming.PredownloadAssetsAsync(tagName，priority, showProgress) 需要成对出现。注意，首次录制时，当前游戏还没有tagName标识的预加载分包，AutoStreaming.PredownloadAssetsAsync(tagName)将返回null；
 
 
-6. 按照打包流程中的步骤13，打包小游戏
+6. 按照打包流程中的步骤**打包小游戏并部署到CCD云服务器**，打包小游戏
 
 7. 打开MegaApp，扫码运行。运行关键场景并点开主要界面，引擎会自动录制游戏资源下载列表。
 
@@ -373,7 +399,7 @@ Texture的placeholder 以及Auto Streaming的配置可复用。
 # 游戏版本更新打包流程：
 ## 仅代码改动：
 * 在Cfg & Publish页面创建一个新的badge并使用；
-* 重新执行 步骤 **11. 打包小游戏并部署到CCD云服务器** 之后的操作即可。
+* 重新执行 步骤 **打包小游戏并部署到CCD云服务器** 之后的操作即可。
 
 ## prefab与Scene文件改动：
 * 在Scene Streaming页面，点击 Sync Scenes → 勾选force rebuild → Generate AssetBundles；
