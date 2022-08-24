@@ -42,7 +42,7 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 
  ## 2. 添加InstantGame需要Package
 
-* 打开Package Manager，选择Unity Registry并勾选Show preview packages, 然后搜索“instant Game”, 点击“install”安装以下package最新版本:
+* 打开Package Manager，选择Unity Registry并勾选Show preview packages, 然后搜索“instant game”, 点击“install”安装以下package最新版本:
 ![](Ig_doc_pic/add_packages_instantgame.png)
 
  ## 3. 切换平台和选择压缩格式
@@ -251,7 +251,7 @@ CustomCloudAssets目录同时也支持Addressables，可以将Addressables打包
  ## 15. 小游戏运行与测试
 * MegaApp app中仅支持游戏自身的功能测试，**广告支付等功能需要在平台方发布测试版**后使用。已接入字节小游戏SDK的游戏，请更新字节SDK到最新版本，旧版SDK需打包**Development版本**才可以在MegaApp app运行。
 
-* 从[Unity Instant Game](https://unity.cn/instantgame)网页下载c106版本下的MegaApp app并安装。该App中包含了一个BoatAttack转成的Instant Game示例，同时也是Unity Instant Game的测试工具。
+* 从[Unity Instant Game](https://unity.cn/instantgame)网页下载c109版本下的MegaApp app并安装。该App中包含了一个BoatAttack转成的Instant Game示例，同时也是Unity Instant Game的测试工具。
 
 ![](Ig_doc_pic/megaapp.png)
 
@@ -336,7 +336,7 @@ Instant Game界面才会显示ConvertLegacySpritePacker按钮。
 * 如果操作失误，上传文件到CCD时覆盖了已有版本的badge，请前往CCD网站将Badge标签设置回来。
 ![](Ig_doc_pic/reset_badge.png)
 
-* 如果定制版Unity不是从从Unity Hub安装的，请使用Hub下载官方版本的unity 2019.4.29f1c2并勾选SDK、NDK，完成后请打开定制版Unity 的 Edit → Preference → External Tools窗口，将JDK，SDK，NDK按如下路径设置，然后重启Editor。
+* 如果定制版Unity不是从Unity Hub安装的，请使用Hub下载官方版本的unity 2019.4.29f1c2并勾选SDK、NDK，完成后请打开定制版Unity 的 Edit → Preference → External Tools窗口，将JDK，SDK，NDK按如下路径设置，然后重启Editor。
 
 ![](Ig_doc_pic/sdk.png)
 
@@ -446,7 +446,7 @@ Texture的placeholder 以及Auto Streaming的配置可复用。
 * 请先关闭Unity Editor后重试，如果该方法无效，请根据errorMessage的值参考[腾讯云故障处理](https://cloud.tencent.com/document/product/436/54303)文档查找具体原因。
 
 10.部分Android 10以上的手机运行小游戏时卡住或闪退，错误日志中有“use memory address more than 16GB”的提示。
-* 2019.4.29f1c106之后的版本以修复该问题，推荐使用最新发布的InstantGame Editor。
+* 2019.4.29f1c106之后的版本已修复该问题，推荐使用最新发布的InstantGame Editor。
 
 #  版本历史：
 
