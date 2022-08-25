@@ -36,21 +36,21 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 # 转换小游戏基本步骤
 在接下来的文档中，将以[Endless Runner](Ig_doc_file/EndlessRunner.unitypackage)游戏为示例，介绍如何使用Instant Game功能转换小游戏，游戏工程可从以下链接获取[EndlessRunner.unitypackage](Ig_doc_file/EndlessRunner.unitypackage)。
 
- ## 1. 新建Endless Runner工程
+## 1. 新建Endless Runner工程
 使用定制版引擎 Unity2019.4.29f1c109新建工程Endless Runner，下载[EndlessRunner.unitypackage](Ig_doc_file/EndlessRunner.unitypackage)并导入工程。
 ![](Ig_doc_pic/import_project.png)
 
- ## 2. 添加InstantGame需要Package
+## 2. 添加InstantGame需要Package
 
 * 打开Package Manager，选择Unity Registry并勾选Show preview packages, 然后搜索“instant game”, 点击“install”安装以下package最新版本:
 ![](Ig_doc_pic/add_packages_instantgame.png)
 
- ## 3. 切换平台和选择压缩格式
+## 3. 切换平台和选择压缩格式
 打开 File → Build Settings 窗口，切换到Android 平台，并选择 LZ4HC 压缩格式。同时确认**取消勾选export project**。
 
 ![](Ig_doc_pic/buildSetting.png)
 
- ## 4. 打开Instant Game功能并选择小游戏平台
+## 4. 打开Instant Game功能并选择小游戏平台
  InstantGame窗口位于Windows → Auto Streaming，该窗口包含了InstantGame的所有功能选项，打包小游戏前的资源streaming设置，以及上传云资源到CCD的设置。
 
 ![](Ig_doc_pic/cfg_and_publish.png)
@@ -69,7 +69,7 @@ Unity Instant Game 云端由 Unity CCD（Cloud Content Delivery）提供服务�
 
 ![](Ig_doc_pic/experimental_features.png)
 
- ## 5. 配置CCD云服务器
+## 5. 配置CCD云服务器
 Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作为部署streaming资源的云服务器。Unity CCD 提供了便捷的云端资源的版本管理。
 
 | 字段  | 描述 |
@@ -95,7 +95,7 @@ Unity Instant Game小游戏默认使用Unity CCD（Cloud Content Delivery）作�
 
 CCD会为每一个Bucket自动生成一个名为latest的badge，每次上传文件，该badge位置都会自动更新，始终指向最新的资源版本，因此**不要在提交给小游戏平台的版本中使用latest**，以免后续资源更新时影响已发布版本。
 
- ## 6. AB中的资源列表（可选）
+## 6. AB中的资源列表（可选）
 我们希望把AB中的重度资源（Texture、Mesh等）抽取出来，放到云上，按需下载加载。这样可以大大减小AB的体积。这对于减小首包、减小AB下载时间都很有帮助。为了实现这个目的，InstantGame工具需要搜索AB中的资源。Unity支持两种方式指定哪些资源会被打包到哪个AB中：
 - 在UnityEditor的Inspector中设置资源的AssetBundle名称
 - 通过BuildPipeline.BuildAssetBundles(string outputPath, AssetBundleBuild[] builds, ...)在代码中动态指定
@@ -106,7 +106,7 @@ CCD会为每一个Bucket自动生成一个名为latest的badge，每次上传文
 
 Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因此跳过该步骤。
 
- ## 7. 设置模型导入默认材质（可选）
+## 7. 设置模型导入默认材质（可选）
  如果游戏的AssetBundle中有FBX等模型资源文件，建议执行该步骤。
 
  ![](Ig_doc_pic/model_import_default_mat.png)
@@ -120,7 +120,7 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 注意: 该步骤仅需操作一次，后续添加模型资源自动生效。Reimport Models with DefaultImportMaterial操作，模型资源过多时可能需要很长时间
 
- ## 8. 配置Texture Streaming
+## 8. 配置Texture Streaming
 配置游戏内texture是否使用streaming功能，以及streaming placeholder的类型。Instant Game用placeholder图片替换游戏首包内的原始贴图，游戏运行时，先加载低分辨率/低信息量的贴图，快速启动游戏。当游戏首次使用到该Texture资源时，将触发引擎后台线程从CCD云端下载原始贴图，完成后自动替换为原始贴图。
 
 | 功能  | 描述 |
@@ -139,14 +139,14 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
  注: 如果游戏中使用了图集SpriteAtlas，并且图集打包到了Addressables中，请在上述操作完成后，额外点击按钮 "Use SpriteAtlas Placeholder in Addressable"来替换其中的图集为小图。
 
- ## 9. 配置Audio/Mesh/Animation Streaming
+## 9. 配置Audio/Mesh/Animation Streaming
 配置游戏内的Audio/Mesh/Animation资源是否使用streaming功能。Instant Game支持将本地较大的音频和 mesh等资源内的数据从游戏首包/AB 中抽离出来，部署CCD服务器上。当游戏首次使用到该Audio/Mesh/Animation资源时，将触发引擎后台线程下载资源数据，完成后自动加载使用。
 
 **使用流程**：点击 Sync Audios/Meshes/Animation → 勾选 RT Mem 较大（例如大于5K）的资源。
 
 如果某个Audio/Mesh/Animation勾选了Streaming导致游戏出现问题（勾选Streaming会使Audio/Mesh的数据延迟，在代码中对该Audio/Mesh进行了读写操作， 可能出现问题），取消勾选该 Audio/Mesh/Animation 即可。
 
- ## 10. 场景Streaming
+## 10. 场景Streaming
 选择BuildSettings 中的场景，打包成 AssetBundle，并部署到CCD服务器上。开发者像往常一样通过 SceneManager 调用 LoadScene/LoadSceneAsync。底层将自动触发下载，完成后自动加载场景。
 
 | 功能  | 描述 |
@@ -171,7 +171,7 @@ Endless Runner游戏工程中没有使用AssetBundle building map打包AB，因�
 
 **Scene Streaming 依赖于 Texture/Audio/Mesh/Animation/Font Streaming的配置，请务必先执行前面的操作。**
 
- ## 11. 游戏AB/Addressables重打包（可选）
+## 11. 游戏AB/Addressables重打包（可选）
 * 游戏工程使用了Asset bundle ，需要在配置好Texture/Audio/Mesh/Animation Streaming后，重新build Asset bundle（删除已有AB, 再打包）。
 
 * 游戏工程使用了 Addressables，同样需要在配置好Texture/Audio/Mesh/Animation Streaming后重新打包。
@@ -221,7 +221,7 @@ CustomCloudAssets目录同时也支持Addressables，可以将Addressables打包
 * 如果是重度游戏，且云资源非常多，通过设置MaxCacheSize依旧无法正常进行游戏，请联系小游戏平台方，将缓存限制设置为更大的值。
 
 
- ## 14. 打包小游戏并部署到CCD云服务器
+## 14. 打包小游戏并部署到CCD云服务器
 * 打开Auto Streaming -> Cfg & Publish页面，在左侧选择使用的bucket和badge；
 如果**当前选中的Badge已经用于版本发布，必须新建一个badge使用，否则将覆盖已有的版本**，另外**不建议使用latest badge**。
 
@@ -248,7 +248,7 @@ CustomCloudAssets目录同时也支持Addressables，可以将Addressables打包
 
 ![](Ig_doc_pic/ig_stats.png)
 
- ## 15. 小游戏运行与测试
+## 15. 小游戏运行与测试
 * MegaApp app中仅支持游戏自身的功能测试，**广告支付等功能需要在平台方发布测试版**后使用。已接入字节小游戏SDK的游戏，请更新字节SDK到最新版本，旧版SDK需打包**Development版本**才可以在MegaApp app运行。
 
 * 从[Unity Instant Game](https://unity.cn/instantgame)网页下载c109版本下的MegaApp app并安装。该App中包含了一个BoatAttack转成的Instant Game示例，同时也是Unity Instant Game的测试工具。
@@ -447,7 +447,7 @@ Texture的placeholder 以及Auto Streaming的配置可复用。
 10.部分Android 10以上的手机运行小游戏时卡住或闪退，错误日志中有“use memory address more than 16GB”的提示。
 * 2019.4.29f1c106之后的版本已修复该问题，推荐使用最新发布的InstantGame Editor。
 
-#  版本历史：
+# 版本历史：
 
 ## 2019.4.29f1c109  --  2022/08/22
 * 新增预下载功能
